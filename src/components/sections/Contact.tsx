@@ -111,7 +111,7 @@ export default function Contact() {
                             </div>
                             <div className="text-left">
                                 <p className="text-xs font-medium text-[var(--muted-foreground)] mb-0.5">Email</p>
-                                <p className="text-sm font-bold text-[var(--foreground)]">ranzodzt@gmail.com</p>
+                                <p className="text-sm font-bold text-[var(--foreground)]">Send an Email</p>
                             </div>
                         </div>
                         <motion.span
@@ -140,7 +140,7 @@ export default function Contact() {
                             </div>
                             <div className="text-left">
                                 <p className="text-xs font-medium text-[var(--muted-foreground)] mb-0.5">WhatsApp</p>
-                                <p className="text-sm font-bold text-[var(--foreground)]">+49 152 0478 5579</p>
+                                <p className="text-sm font-bold text-[var(--foreground)]">Let's Chat</p>
                             </div>
                         </div>
                         <motion.span
