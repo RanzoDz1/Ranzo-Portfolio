@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { Mail, CheckCircle2, CreditCard, Phone, Paperclip, X } from "lucide-react";
 import { trackEvent } from "@/components/Analytics";
@@ -12,6 +12,21 @@ export default function Contact() {
     const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
     const [fileName, setFileName] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [cmsSettings, setCmsSettings] = useState({ email: "ranzodzt@gmail.com", phone: "+4915204785579" });
+
+    useEffect(() => {
+        fetch("/api/settings")
+            .then(res => res.json())
+            .then(data => {
+                if (data.global_email || data.global_phone) {
+                    setCmsSettings(prev => ({
+                        email: data.global_email || prev.email,
+                        phone: data.global_phone || prev.phone
+                    }));
+                }
+            })
+            .catch(() => {});
+    }, []);
 
     const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -108,7 +123,7 @@ export default function Contact() {
                 <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-stretch max-w-xl mx-auto">
                     {/* Email card */}
                     <motion.a
-                        href="https://mail.google.com/mail/?view=cm&fs=1&to=ranzodzt@gmail.com"
+                        href={`mailto:${cmsSettings.email}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         initial={{ opacity: 0, y: 30, scale: 0.96 }}
@@ -137,7 +152,7 @@ export default function Contact() {
 
                     {/* WhatsApp card */}
                     <motion.a
-                        href="https://wa.me/4915204785579"
+                        href={`https://wa.me/${cmsSettings.phone.replace(/[^0-9]/g, "")}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         initial={{ opacity: 0, y: 30, scale: 0.96 }}

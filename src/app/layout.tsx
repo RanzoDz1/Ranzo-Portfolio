@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import Analytics from "@/components/Analytics";
+import Tracker from "@/components/Tracker";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -398,6 +399,7 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans antialiased`}>
         <ThemeProvider>{children}</ThemeProvider>
         <Analytics />
+        <Tracker />
       </body>
     </html>
   );

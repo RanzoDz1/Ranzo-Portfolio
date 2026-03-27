@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Settings {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+}
+
+model VisitorLog {
+  id        String   @id @default(cuid())
+  ipHash    String   // Anonymized IP hash to avoid storing raw PII
+  pathname  String
+  userAgent String
+  device    String   // e.g. "Mobile", "Desktop"
+  browser   String
+  visitedAt DateTime @default(now())
+}

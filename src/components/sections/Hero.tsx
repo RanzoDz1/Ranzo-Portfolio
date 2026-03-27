@@ -15,6 +15,18 @@ export default function Hero() {
     const containerRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState(false);
     const [bgLoaded, setBgLoaded] = useState(false);
+    const [heroTitle, setHeroTitle] = useState("Your Website.");
+
+    useEffect(() => {
+        fetch("/api/settings")
+            .then(res => res.json())
+            .then(data => {
+                if (data.hero_title) {
+                    setHeroTitle(data.hero_title);
+                }
+            })
+            .catch(() => {});
+    }, []);
 
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -228,7 +240,7 @@ export default function Hero() {
                             transition={{ delay: 0.3, duration: 0.42, ease: pmEase.entrance }}
                             className="text-[2.5rem] sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.1] sm:leading-none text-gradient relative z-10"
                         >
-                            Your Website.
+                            {heroTitle}
                         </motion.h1>
                     </motion.div>
 
