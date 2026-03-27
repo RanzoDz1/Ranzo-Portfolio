@@ -10,7 +10,8 @@ export async function POST(req: NextRequest) {
 
     // Get anonymized IP hash
     const headersList = await headers();
-    const ip = headersList.get("x-forwarded-for") || req.ip || "unknown";
+    const forwarded = headersList.get("x-forwarded-for");
+    const ip = forwarded ? forwarded.split(',')[0] : "unknown";
     const userAgent = headersList.get("user-agent") || "unknown";
 
     const hash = crypto.createHash("sha256");
