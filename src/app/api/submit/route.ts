@@ -7,7 +7,7 @@ const ADMIN_SECRET = process.env.ADMIN_SECRET;
 const KV_KEY = "ranzo_submissions";
 const NOTIFICATION_EMAIL = "ranzodzt@gmail.com";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY || "re_dummy_build_key");
 
 const redisUrl = process.env.REDIS_URL;
 let kvClient: Redis | null = null;

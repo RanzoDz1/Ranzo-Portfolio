@@ -32,9 +32,19 @@ export async function GET() {
       count: item._count.browser,
     }));
 
+    // Get top visited pages
+    const topPagesList = await prisma.visitorLog.groupBy({
+      by: ['pathname'],
+      _count: { pathname: true },
+    });
+    const topPages = topPagesList
+      .map(item => ({ name: item.pathname, count: item._count.pathname }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5); // top 5 pages
+
     // Recent activity
     const recentLogs = await prisma.visitorLog.findMany({
-      take: 10,
+      take: 20, // get top 20 instead of 10
       orderBy: { visitedAt: 'desc' },
       select: {
         pathname: true,
@@ -49,6 +59,7 @@ export async function GET() {
       uniqueVisitors,
       devices,
       browsers,
+      topPages,
       recentLogs
     }, { status: 200 });
   } catch (error) {
