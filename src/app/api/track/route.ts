@@ -29,6 +29,11 @@ export async function POST(req: NextRequest) {
     else if (/firefox/i.test(userAgent)) browser = "Firefox";
     else if (/edge/i.test(userAgent)) browser = "Edge";
 
+    // Get location data natively from Vercel
+    const country = headersList.get("x-vercel-ip-country") || null;
+    let city = headersList.get("x-vercel-ip-city") || null;
+    if (city) { city = decodeURIComponent(city); }
+
     await prisma.visitorLog.create({
       data: {
         ipHash,
@@ -36,6 +41,8 @@ export async function POST(req: NextRequest) {
         userAgent,
         device,
         browser,
+        country,
+        city,
       },
     });
 

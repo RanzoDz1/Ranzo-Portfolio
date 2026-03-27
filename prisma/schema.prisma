@@ -20,5 +20,7 @@ model VisitorLog {
   userAgent String
   device    String   // e.g. "Mobile", "Desktop"
   browser   String
+  country   String?  // Derived from x-vercel-ip-country
+  city      String?  // Derived from x-vercel-ip-city
   visitedAt DateTime @default(now())
 }

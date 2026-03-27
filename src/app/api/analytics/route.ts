@@ -62,6 +62,17 @@ export async function GET(request: Request) {
       .sort((a, b) => b.count - a.count)
       .slice(0, 5); // top 5 pages
 
+    // Get top countries
+    const topCountriesList = await prisma.visitorLog.groupBy({
+      by: ['country'],
+      where: dateFilter,
+      _count: { country: true },
+    });
+    const topCountries = topCountriesList
+      .map(item => ({ name: item.country || "Unknown", count: item._count.country }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5);
+
     // Recent activity
     const recentLogs = await prisma.visitorLog.findMany({
       take: 20, // get top 20 instead of 10
@@ -81,6 +92,7 @@ export async function GET(request: Request) {
       devices,
       browsers,
       topPages,
+      topCountries,
       recentLogs
     }, { status: 200 });
   } catch (error) {

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Lock, LogOut, RefreshCw, Mail, ShoppingBag, Trash2, LayoutGrid, Settings, Key, Globe, Save, BarChart3, Users, Monitor, MonitorSmartphone, MousePointer2, Paperclip } from "lucide-react";
+import { Lock, LogOut, RefreshCw, Mail, ShoppingBag, Trash2, LayoutGrid, Settings, Key, Globe, Save, BarChart3, Users, Monitor, MonitorSmartphone, MousePointer2, Paperclip, MapPin } from "lucide-react";
 
 interface Submission {
     id: string;
@@ -428,6 +428,30 @@ export default function AdminDashboard() {
                                     </ul>
                                 ) : (
                                     <p className="text-[var(--muted-foreground)] text-sm">No device data yet.</p>
+                                )}
+                            </div>
+
+                            <div>
+                                <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><MapPin size={18} className="text-rose-500" /> Locations</h3>
+                                {analytics?.topCountries?.length > 0 ? (
+                                    <ul className="space-y-3">
+                                        {analytics.topCountries.map((loc: any, idx: number) => {
+                                            const pct = Math.round((loc.count / (analytics.totalViews || 1)) * 100);
+                                            return (
+                                                <li key={idx} className="text-sm">
+                                                    <div className="flex justify-between mb-1">
+                                                        <span className="font-medium text-[var(--foreground)]">{loc.name}</span>
+                                                        <span className="text-[var(--muted-foreground)]">{pct}% ({loc.count})</span>
+                                                    </div>
+                                                    <div className="w-full bg-[var(--muted)] rounded-full h-1.5">
+                                                        <div className="bg-rose-500 h-1.5 rounded-full" style={{ width: `${pct}%` }}></div>
+                                                    </div>
+                                                </li>
+                                            );
+                                        })}
+                                    </ul>
+                                ) : (
+                                    <p className="text-[var(--muted-foreground)] text-sm">No location data yet.</p>
                                 )}
                             </div>
                         </div>
