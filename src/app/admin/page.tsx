@@ -35,6 +35,7 @@ export default function AdminDashboard() {
     const [storageStatus, setStorageStatus] = useState<{ type: string; is_kv_connected: boolean; is_blob_connected: boolean; is_resend_connected?: boolean }>({ type: "unknown", is_kv_connected: false, is_blob_connected: false, is_resend_connected: false });
 
     // New States for Analytics & Settings Configs
+    const [timeFilter, setTimeFilter] = useState<"24h" | "7d" | "30d" | "all">("all");
     const [analytics, setAnalytics] = useState<any>(null);
     const [siteSettings, setSiteSettings] = useState<Record<string, string>>({
         global_email: "",
@@ -55,10 +56,10 @@ export default function AdminDashboard() {
     useEffect(() => {
         if (isAuthenticated) {
             fetchSubmissions();
-            fetchAnalytics();
+            fetchAnalytics(timeFilter);
             fetchSettings();
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, timeFilter]);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -114,9 +115,9 @@ export default function AdminDashboard() {
         setPassword("");
     };
 
-    const fetchAnalytics = async () => {
+    const fetchAnalytics = async (filter = timeFilter) => {
         try {
-            const res = await fetch("/api/analytics");
+            const res = await fetch(`/api/analytics?filter=${filter}`);
             if (res.ok) {
                 const data = await res.json();
                 setAnalytics(data);
@@ -330,7 +331,20 @@ export default function AdminDashboard() {
                 {isLoading && displayedSubmissions.length === 0 && activeTab !== "analytics" && activeTab !== "settings" ? (
                     <div className="flex justify-center py-20"><RefreshCw size={24} className="animate-spin text-[var(--muted-foreground)]" /></div>
                 ) : activeTab === "analytics" ? (
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="space-y-6">
+                        <div className="flex justify-end pr-2">
+                            <select
+                                value={timeFilter}
+                                onChange={(e) => setTimeFilter(e.target.value as any)}
+                                className="bg-[var(--card)] border border-[var(--border)] text-[var(--foreground)] text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-4 py-2"
+                            >
+                                <option value="all">All Time</option>
+                                <option value="30d">Last 30 Days</option>
+                                <option value="7d">Last 7 Days</option>
+                                <option value="24h">Last 24 Hours</option>
+                            </select>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         {/* Traffic Overview */}
                         <div className="bg-[var(--card)] border border-[var(--border)] p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center min-h-[160px]">
                             <Users size={32} className="text-emerald-500 mb-3" />
@@ -442,6 +456,7 @@ export default function AdminDashboard() {
                                 )}
                             </div>
                         </div>
+                    </div>
                     </div>
                 ) : activeTab === "settings" ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

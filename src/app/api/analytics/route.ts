@@ -1,20 +1,38 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export async function GET() {
+export const dynamic = "force-dynamic";
+
+export async function GET(request: Request) {
   try {
-    // Get total views
-    const totalViews = await prisma.visitorLog.count();
+    const { searchParams } = new URL(request.url);
+    const filter = searchParams.get("filter") || "all";
+
+    // Build the date filter for Prisma
+    const now = new Date();
+    let dateFilter = {};
+    if (filter === "24h") {
+      dateFilter = { visitedAt: { gte: new Date(now.getTime() - 24 * 60 * 60 * 1000) } };
+    } else if (filter === "7d") {
+      dateFilter = { visitedAt: { gte: new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000) } };
+    } else if (filter === "30d") {
+      dateFilter = { visitedAt: { gte: new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000) } };
+    }
+
+    // Basic aggregations
+    const totalViews = await prisma.visitorLog.count({ where: dateFilter });
 
     // Get unique visitors (unique IPs)
     const uniqueVisitorsResult = await prisma.visitorLog.groupBy({
       by: ['ipHash'],
+      where: dateFilter,
     });
     const uniqueVisitors = uniqueVisitorsResult.length;
 
-    // Get devices breakdown
+    // Device breakdown
     const devicesList = await prisma.visitorLog.groupBy({
       by: ['device'],
+      where: dateFilter,
       _count: { device: true },
     });
     const devices = devicesList.map(item => ({
@@ -22,9 +40,10 @@ export async function GET() {
       count: item._count.device,
     }));
 
-    // Get browser breakdown
+    // OS/Browser breakdown
     const browsersList = await prisma.visitorLog.groupBy({
       by: ['browser'],
+      where: dateFilter,
       _count: { browser: true },
     });
     const browsers = browsersList.map(item => ({
@@ -35,6 +54,7 @@ export async function GET() {
     // Get top visited pages
     const topPagesList = await prisma.visitorLog.groupBy({
       by: ['pathname'],
+      where: dateFilter,
       _count: { pathname: true },
     });
     const topPages = topPagesList
@@ -45,6 +65,7 @@ export async function GET() {
     // Recent activity
     const recentLogs = await prisma.visitorLog.findMany({
       take: 20, // get top 20 instead of 10
+      where: dateFilter,
       orderBy: { visitedAt: 'desc' },
       select: {
         pathname: true,
