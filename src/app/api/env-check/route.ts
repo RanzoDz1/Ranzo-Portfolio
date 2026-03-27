@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
-    const authHeader = request.headers.get("authorization") || "";
-    if (authHeader !== `Bearer ${process.env.ADMIN_SECRET || "ranzo-admin-2026"}`) {
+    const authHeader = request.headers.get("Authorization");
+    if (authHeader !== `Bearer ${process.env.ADMIN_SECRET}`) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
