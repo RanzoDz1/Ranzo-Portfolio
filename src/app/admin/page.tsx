@@ -332,11 +332,13 @@ export default function AdminDashboard() {
                     <div className="flex justify-center py-20"><RefreshCw size={24} className="animate-spin text-[var(--muted-foreground)]" /></div>
                 ) : activeTab === "analytics" ? (
                     <div className="space-y-6">
-                        <div className="flex justify-end pr-2">
+                        {/* Filter bar */}
+                        <div className="flex justify-between items-center">
+                            <h2 className="text-xl font-bold">Analytics Space</h2>
                             <select
                                 value={timeFilter}
                                 onChange={(e) => setTimeFilter(e.target.value as any)}
-                                className="bg-[var(--card)] border border-[var(--border)] text-[var(--foreground)] text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block px-4 py-2"
+                                className="bg-[var(--card)] border border-[var(--border)] text-[var(--foreground)] text-sm rounded-lg px-4 py-2"
                             >
                                 <option value="all">All Time</option>
                                 <option value="30d">Last 30 Days</option>
@@ -344,143 +346,155 @@ export default function AdminDashboard() {
                                 <option value="24h">Last 24 Hours</option>
                             </select>
                         </div>
+
+                        {/* KPI Cards Row */}
+                        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                            <div className="bg-[var(--card)] border border-[var(--border)] p-4 rounded-2xl flex flex-col items-center justify-center min-h-[120px]">
+                                <Users size={24} className="text-emerald-500 mb-2" />
+                                <p className="text-[var(--muted-foreground)] text-xs font-semibold text-center">Total Views</p>
+                                <p className="text-3xl font-black mt-1">{analytics?.totalViews || 0}</p>
+                            </div>
+                            <div className="bg-[var(--card)] border border-[var(--border)] p-4 rounded-2xl flex flex-col items-center justify-center min-h-[120px]">
+                                <Globe size={24} className="text-blue-500 mb-2" />
+                                <p className="text-[var(--muted-foreground)] text-xs font-semibold text-center">Unique Visitors</p>
+                                <p className="text-3xl font-black mt-1">{analytics?.uniqueVisitors || 0}</p>
+                            </div>
+                            <div className="bg-[var(--card)] border border-[var(--border)] p-4 rounded-2xl flex flex-col items-center justify-center min-h-[120px]">
+                                <Users size={24} className="text-purple-500 mb-2" />
+                                <p className="text-[var(--muted-foreground)] text-xs font-semibold text-center">New Visitors</p>
+                                <p className="text-3xl font-black mt-1">{analytics?.newVisitors ?? "—"}</p>
+                            </div>
+                            <div className="bg-[var(--card)] border border-[var(--border)] p-4 rounded-2xl flex flex-col items-center justify-center min-h-[120px]">
+                                <RefreshCw size={24} className="text-amber-500 mb-2" />
+                                <p className="text-[var(--muted-foreground)] text-xs font-semibold text-center">Returning</p>
+                                <p className="text-3xl font-black mt-1">{analytics?.returningVisitors ?? "—"}</p>
+                            </div>
+                            <div className="bg-[var(--card)] border border-[var(--border)] p-4 rounded-2xl flex flex-col items-center justify-center min-h-[120px]">
+                                <BarChart3 size={24} className="text-rose-500 mb-2" />
+                                <p className="text-[var(--muted-foreground)] text-xs font-semibold text-center">Avg Session</p>
+                                <p className="text-3xl font-black mt-1">{analytics?.avgSession != null ? `${analytics.avgSession}s` : "—"}</p>
+                            </div>
+                        </div>
+
+                        {/* Left column: breakdowns — Right column: logs */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {/* Traffic Overview */}
-                        <div className="bg-[var(--card)] border border-[var(--border)] p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center min-h-[160px]">
-                            <Users size={32} className="text-emerald-500 mb-3" />
-                            <h3 className="text-[var(--muted-foreground)] font-semibold text-sm">Total Website Views</h3>
-                            <p className="text-4xl font-black mt-2 text-[var(--foreground)]">{analytics?.totalViews || 0}</p>
-                        </div>
-                        <div className="bg-[var(--card)] border border-[var(--border)] p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center min-h-[160px]">
-                            <Globe size={32} className="text-blue-500 mb-3" />
-                            <h3 className="text-[var(--muted-foreground)] font-semibold text-sm">Unique Visitors (IPs)</h3>
-                            <p className="text-4xl font-black mt-2 text-[var(--foreground)]">{analytics?.uniqueVisitors || 0}</p>
-                        </div>
-                        <div className="bg-[var(--card)] border border-[var(--border)] p-6 rounded-2xl shadow-xl flex flex-col items-center justify-center min-h-[160px]">
-                            <MousePointer2 size={32} className="text-amber-500 mb-3" />
-                            <h3 className="text-[var(--muted-foreground)] font-semibold text-sm">Total Submissions</h3>
-                            <p className="text-4xl font-black mt-2 text-[var(--foreground)]">{submissions.length}</p>
-                        </div>
 
-                        {/* Top Pages & Device/Browser Breakdown */}
-                        <div className="md:col-span-1 bg-[var(--card)] border border-[var(--border)] p-6 rounded-2xl shadow-xl space-y-8">
-                            <div>
-                                <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><LayoutGrid size={18} className="text-purple-500" /> Top Pages</h3>
-                                {analytics?.topPages?.length > 0 ? (
-                                    <ul className="space-y-3">
-                                        {analytics.topPages.map((page: any, idx: number) => (
-                                            <li key={idx} className="flex items-center justify-between text-sm">
-                                                <span className="font-medium text-[var(--foreground)] truncate max-w-[150px]">{page.name}</span>
-                                                <div className="flex items-center gap-2">
-                                                    <span className="font-bold">{page.count}</span>
-                                                    <span className="text-[10px] text-[var(--muted-foreground)] uppercase">Views</span>
-                                                </div>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                ) : (
-                                    <p className="text-[var(--muted-foreground)] text-sm">No page data yet.</p>
-                                )}
-                            </div>
+                            {/* Breakdown column */}
+                            <div className="md:col-span-1 space-y-6">
 
-                            <div>
-                                <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><Globe size={18} className="text-blue-500" /> Browsers</h3>
-                                {analytics?.browsers?.length > 0 ? (
-                                    <ul className="space-y-3">
-                                        {analytics.browsers.map((browser: any, idx: number) => {
-                                            const pct = Math.round((browser.count / (analytics.totalViews || 1)) * 100);
-                                            return (
-                                                <li key={idx} className="text-sm">
-                                                    <div className="flex justify-between mb-1">
-                                                        <span className="font-medium text-[var(--foreground)]">{browser.name}</span>
-                                                        <span className="text-[var(--muted-foreground)]">{pct}% ({browser.count})</span>
-                                                    </div>
-                                                    <div className="w-full bg-[var(--muted)] rounded-full h-1.5">
-                                                        <div className="bg-blue-500 h-1.5 rounded-full" style={{ width: `${pct}%` }}></div>
-                                                    </div>
+                                {/* Top Pages */}
+                                <div className="bg-[var(--card)] border border-[var(--border)] p-6 rounded-2xl shadow-xl space-y-3">
+                                    <h3 className="text-base font-bold flex items-center gap-2"><LayoutGrid size={16} className="text-purple-500" /> Top Pages</h3>
+                                    {analytics?.topPages?.length > 0 ? (
+                                        <ul className="space-y-2">
+                                            {analytics.topPages.map((page: any, idx: number) => (
+                                                <li key={idx} className="flex items-center justify-between text-sm">
+                                                    <span className="font-medium truncate max-w-[160px]">{page.name}</span>
+                                                    <span className="text-[var(--muted-foreground)] font-bold">{page.count}</span>
                                                 </li>
-                                            );
-                                        })}
-                                    </ul>
-                                ) : (
-                                    <p className="text-[var(--muted-foreground)] text-sm">No browser data yet.</p>
-                                )}
+                                            ))}
+                                        </ul>
+                                    ) : <p className="text-[var(--muted-foreground)] text-sm">No data yet.</p>}
+                                </div>
+
+                                {/* Browsers */}
+                                {[
+                                    { key: "browsers", label: "Browsers", color: "bg-blue-500", icon: <Globe size={16} className="text-blue-500" /> },
+                                    { key: "devices", label: "Devices", color: "bg-emerald-500", icon: <MonitorSmartphone size={16} className="text-emerald-500" /> },
+                                    { key: "operatingSystems", label: "Operating Systems", color: "bg-amber-500", icon: <Monitor size={16} className="text-amber-500" /> },
+                                    { key: "topCountries", label: "Locations", color: "bg-rose-500", icon: <MapPin size={16} className="text-rose-500" /> },
+                                    { key: "topReferrers", label: "Referrers", color: "bg-indigo-500", icon: <Globe size={16} className="text-indigo-400" /> },
+                                    { key: "topLanguages", label: "Languages", color: "bg-teal-500", icon: <Globe size={16} className="text-teal-400" /> },
+                                ].map(({ key, label, color, icon }) => (
+                                    <div key={key} className="bg-[var(--card)] border border-[var(--border)] p-6 rounded-2xl shadow-xl space-y-3">
+                                        <h3 className="text-base font-bold flex items-center gap-2">{icon} {label}</h3>
+                                        {analytics?.[key]?.length > 0 ? (
+                                            <ul className="space-y-2">
+                                                {analytics[key].map((item: any, idx: number) => {
+                                                    const pct = Math.round((item.count / (analytics.totalViews || 1)) * 100);
+                                                    return (
+                                                        <li key={idx} className="text-sm">
+                                                            <div className="flex justify-between mb-1">
+                                                                <span className="font-medium truncate max-w-[140px]">{item.name}</span>
+                                                                <span className="text-[var(--muted-foreground)]">{pct}%</span>
+                                                            </div>
+                                                            <div className="w-full bg-[var(--muted)] rounded-full h-1.5">
+                                                                <div className={`${color} h-1.5 rounded-full`} style={{ width: `${pct}%` }}></div>
+                                                            </div>
+                                                        </li>
+                                                    );
+                                                })}
+                                            </ul>
+                                        ) : <p className="text-[var(--muted-foreground)] text-sm">No data yet.</p>}
+                                    </div>
+                                ))}
+
+                                {/* Peak Traffic Hours */}
+                                <div className="bg-[var(--card)] border border-[var(--border)] p-6 rounded-2xl shadow-xl">
+                                    <h3 className="text-base font-bold flex items-center gap-2 mb-4"><BarChart3 size={16} className="text-sky-400" /> Peak Traffic Hours</h3>
+                                    {analytics?.peakHours?.length > 0 ? (
+                                        <div className="flex items-end gap-[2px] h-20">
+                                            {analytics.peakHours.map((h: any, idx: number) => {
+                                                const maxCount = Math.max(...analytics.peakHours.map((x: any) => x.count), 1);
+                                                const heightPct = Math.max((h.count / maxCount) * 100, 4);
+                                                return (
+                                                    <div key={idx} className="flex-1 flex flex-col items-center gap-1 group cursor-default">
+                                                        <div title={`${h.hour}:00 — ${h.count} visits`} className="w-full bg-sky-500/70 rounded-sm hover:bg-sky-400 transition-colors" style={{ height: `${heightPct}%` }}></div>
+                                                        {h.hour % 6 === 0 && <span className="text-[9px] text-[var(--muted-foreground)]">{h.hour}h</span>}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    ) : <p className="text-[var(--muted-foreground)] text-sm">No data yet.</p>}
+                                </div>
                             </div>
 
-                            <div>
-                                <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><MonitorSmartphone size={18} className="text-emerald-500" /> Devices</h3>
-                                {analytics?.devices?.length > 0 ? (
-                                    <ul className="space-y-3">
-                                        {analytics.devices.map((device: any, idx: number) => {
-                                            const pct = Math.round((device.count / (analytics.totalViews || 1)) * 100);
-                                            return (
-                                                <li key={idx} className="text-sm">
-                                                    <div className="flex justify-between mb-1">
-                                                        <span className="font-medium text-[var(--foreground)]">{device.name}</span>
-                                                        <span className="text-[var(--muted-foreground)]">{pct}% ({device.count})</span>
-                                                    </div>
-                                                    <div className="w-full bg-[var(--muted)] rounded-full h-1.5">
-                                                        <div className="bg-emerald-500 h-1.5 rounded-full" style={{ width: `${pct}%` }}></div>
-                                                    </div>
-                                                </li>
-                                            );
-                                        })}
-                                    </ul>
-                                ) : (
-                                    <p className="text-[var(--muted-foreground)] text-sm">No device data yet.</p>
-                                )}
-                            </div>
-
-                            <div>
-                                <h3 className="text-lg font-bold mb-4 flex items-center gap-2"><MapPin size={18} className="text-rose-500" /> Locations</h3>
-                                {analytics?.topCountries?.length > 0 ? (
-                                    <ul className="space-y-3">
-                                        {analytics.topCountries.map((loc: any, idx: number) => {
-                                            const pct = Math.round((loc.count / (analytics.totalViews || 1)) * 100);
-                                            return (
-                                                <li key={idx} className="text-sm">
-                                                    <div className="flex justify-between mb-1">
-                                                        <span className="font-medium text-[var(--foreground)]">{loc.name}</span>
-                                                        <span className="text-[var(--muted-foreground)]">{pct}% ({loc.count})</span>
-                                                    </div>
-                                                    <div className="w-full bg-[var(--muted)] rounded-full h-1.5">
-                                                        <div className="bg-rose-500 h-1.5 rounded-full" style={{ width: `${pct}%` }}></div>
-                                                    </div>
-                                                </li>
-                                            );
-                                        })}
-                                    </ul>
-                                ) : (
-                                    <p className="text-[var(--muted-foreground)] text-sm">No location data yet.</p>
-                                )}
+                            {/* Live Traffic Logs */}
+                            <div className="md:col-span-2 bg-[var(--card)] border border-[var(--border)] p-6 rounded-2xl shadow-xl flex flex-col">
+                                <h3 className="text-xl font-bold mb-4">Live Traffic Log</h3>
+                                <div className="flex-1 overflow-auto">
+                                    {analytics?.recentLogs?.length > 0 ? (
+                                        <table className="w-full text-sm">
+                                            <thead>
+                                                <tr className="text-left text-[var(--muted-foreground)] text-xs uppercase tracking-wider border-b border-[var(--border)]">
+                                                    <th className="pb-2 pr-3">Page</th>
+                                                    <th className="pb-2 pr-3 hidden md:table-cell">Device / OS</th>
+                                                    <th className="pb-2 pr-3 hidden md:table-cell">Location</th>
+                                                    <th className="pb-2 pr-3 hidden lg:table-cell">Referrer</th>
+                                                    <th className="pb-2 text-right">Time</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {analytics.recentLogs.map((log: any, idx: number) => (
+                                                    <tr key={idx} className="border-b border-[var(--border)] hover:bg-white/5 transition-colors">
+                                                        <td className="py-2 pr-3">
+                                                            <div className="flex items-center gap-2">
+                                                                {log.device === "Mobile" ? <MonitorSmartphone className="text-purple-400 shrink-0" size={14}/> : <Monitor className="text-sky-400 shrink-0" size={14}/>}
+                                                                <span className="font-medium truncate max-w-[120px]">{log.pathname}</span>
+                                                            </div>
+                                                            <span className="text-[10px] text-[var(--muted-foreground)]">{log.browser}</span>
+                                                        </td>
+                                                        <td className="py-2 pr-3 hidden md:table-cell text-[var(--muted-foreground)]">
+                                                            {log.device}{log.os ? ` · ${log.os}` : ""}
+                                                        </td>
+                                                        <td className="py-2 pr-3 hidden md:table-cell text-[var(--muted-foreground)]">
+                                                            {[log.city, log.country].filter(Boolean).join(", ") || "—"}
+                                                        </td>
+                                                        <td className="py-2 pr-3 hidden lg:table-cell text-[var(--muted-foreground)]">{log.referrer || "Direct"}</td>
+                                                        <td className="py-2 text-right text-[var(--muted-foreground)] tabular-nums text-xs whitespace-nowrap">
+                                                            {new Date(log.visitedAt).toLocaleTimeString()}<br/>
+                                                            <span className="text-[10px]">{new Date(log.visitedAt).toLocaleDateString()}</span>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    ) : (
+                                        <p className="text-[var(--muted-foreground)] py-8 text-center border border-dashed rounded-lg">No traffic recorded yet. Try reloading the homepage.</p>
+                                    )}
+                                </div>
                             </div>
                         </div>
-
-                        {/* Recent Paths Logs */}
-                        <div className="md:col-span-2 bg-[var(--card)] border border-[var(--border)] p-6 rounded-2xl shadow-xl flex flex-col">
-                            <h3 className="text-xl font-bold mb-4">Live Real-time Traffic Logs</h3>
-                            <div className="flex-1 overflow-auto">
-                                {analytics?.recentLogs?.length > 0 ? (
-                                    <ul className="divide-y divide-[var(--border)] text-sm">
-                                        {analytics.recentLogs.map((log: any, idx: number) => (
-                                            <li key={idx} className="py-3 flex items-center justify-between hover:bg-white/5 px-2 rounded-lg transition-colors">
-                                                <div className="flex items-center gap-3">
-                                                    {log.device === "Mobile" ? <MonitorSmartphone className="text-purple-500" size={18}/> : <Monitor className="text-sky-500" size={18}/>}
-                                                    <span className="font-semibold text-[var(--foreground)] min-w-[120px] truncate">{log.pathname}</span>
-                                                    <span className="text-[var(--muted-foreground)] text-xs bg-[var(--muted)] px-2 py-0.5 rounded hidden sm:inline-block">{log.browser}</span>
-                                                </div>
-                                                <span className="text-[var(--muted-foreground)] tabular-nums text-xs sm:text-sm text-right">
-                                                    {new Date(log.visitedAt).toLocaleDateString()} {new Date(log.visitedAt).toLocaleTimeString()}
-                                                </span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                ) : (
-                                    <p className="text-[var(--muted-foreground)] py-8 text-center border border-dashed rounded-lg">No traffic recorded yet. Try reloading the homepage.</p>
-                                )}
-                            </div>
-                        </div>
-                    </div>
                     </div>
                 ) : activeTab === "settings" ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -14,13 +14,17 @@ model Settings {
 }
 
 model VisitorLog {
-  id        String   @id @default(cuid())
-  ipHash    String   // Anonymized IP hash to avoid storing raw PII
-  pathname  String
-  userAgent String
-  device    String   // e.g. "Mobile", "Desktop"
-  browser   String
-  country   String?  // Derived from x-vercel-ip-country
-  city      String?  // Derived from x-vercel-ip-city
-  visitedAt DateTime @default(now())
+  id              String   @id @default(cuid())
+  ipHash          String   // Anonymized IP hash to avoid storing raw PII
+  pathname        String
+  userAgent       String
+  device          String   // e.g. "Mobile", "Desktop"
+  browser         String
+  os              String?  // e.g. "Windows", "Android", "iOS"
+  country         String?  // Derived from x-vercel-ip-country
+  city            String?  // Derived from x-vercel-ip-city
+  referrer        String?  // Where they came from (Domain only)
+  language        String?  // e.g. "en-US", "de"
+  sessionDuration Int?     // Seconds spent on site
+  visitedAt       DateTime @default(now())
 }
