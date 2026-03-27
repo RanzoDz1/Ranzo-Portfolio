@@ -3,7 +3,7 @@
 A premium portfolio website built with Next.js 16.1.6
 
 Resend (Email Notifications):
-Resend is configured to send you an email at `ranzodz1@gmail.com` every time someone submits a message/request.
+Resend is configured to send you an email at `ranzodzt@gmail.com` every time someone submits a message/request.
 - Go to [Resend](https://resend.com/api-keys) and create an API Key.
 - In your Vercel Dashboard, go to **Settings** -> **Environment Variables**.
 - Add a new variable:
@@ -14,5 +14,5 @@ Resend is configured to send you an email at `ranzodz1@gmail.com` every time som
 
 ## Admin Dashboard Access
 The admin dashboard is located at `/admin`.
-- **Username**: `ranzodz`
-- **Password**: `0*****f_rD1*`
+- **Username**: `username`
+- **Password**: `********`
