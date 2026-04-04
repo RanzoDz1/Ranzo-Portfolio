@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useState, useCallback } from "react";
 import { motion, useInView } from "framer-motion";
-import { Mail, CheckCircle2, CreditCard, Phone, Paperclip, X } from "lucide-react";
+import { Mail, CheckCircle2, CreditCard, Paperclip, X } from "lucide-react";
 import { trackEvent } from "@/components/Analytics";
 import { pmEase } from "@/lib/animations";
 
@@ -12,22 +12,6 @@ export default function Contact() {
     const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
     const [fileName, setFileName] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const [cmsSettings, setCmsSettings] = useState({ email: "ranzodzt@gmail.com", phone: "+4915204785579" });
-
-    useEffect(() => {
-        fetch("/api/settings")
-            .then(res => res.json())
-            .then(data => {
-                if (data.global_email || data.global_phone) {
-                    setCmsSettings(prev => ({
-                        email: data.global_email || prev.email,
-                        phone: data.global_phone || prev.phone
-                    }));
-                }
-            })
-            .catch(() => {});
-    }, []);
-
     const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         setFileName(file ? file.name : null);
@@ -58,11 +42,25 @@ export default function Contact() {
         }
 
         try {
-            // Submit to our Next.js API route (cross-platform)
+            // Submit to our Next.js API route
             const res = await fetch("/api/submit", {
                 method: "POST",
-                body: formData, // Send FormData directly for multipart/form-data support (files)
+                body: formData,
             });
+
+            // Send email notification via FormSubmit.co (directly from browser)
+            fetch("https://formsubmit.co/ajax/ranzodzt@gmail.com", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", Accept: "application/json" },
+                body: JSON.stringify({
+                    name: formData.get("name"),
+                    email: formData.get("email"),
+                    message: `Service: ${formData.get("service")}\n\n${formData.get("message")}`,
+                    _subject: `New contact from ${formData.get("name")} — ${formData.get("service")}`,
+                    _replyto: formData.get("email") as string,
+                    _captcha: "false",
+                }),
+            }).catch(() => {});
 
             if (!res.ok) throw new Error("Submission failed");
 
@@ -118,67 +116,6 @@ export default function Contact() {
                     I&apos;m open to freelance projects, consulting, and design collaborations.
                     Drop me an email and I&apos;ll get back to you within 24 hours.
                 </motion.p>
-
-                {/* Contact cards */}
-                <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-stretch max-w-xl mx-auto">
-                    {/* Email card */}
-                    <motion.a
-                        href={`mailto:${cmsSettings.email}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        initial={{ opacity: 0, y: 30, scale: 0.96 }}
-                        animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-                        transition={{ delay: 0.24, duration: 0.4, ease: pmEase.entrance }}
-                        whileHover={{ scale: 1.02, y: -2, transition: { duration: 0.22, ease: pmEase.smooth } }}
-                        className="group flex-1 flex items-center justify-between p-5 rounded-2xl border border-[var(--border)] bg-[var(--card)] hover:border-blue-500/40 hover:shadow-[var(--pm-shadow-premium)] transition-all duration-300"
-                    >
-                        <div className="flex items-center gap-3">
-                            <div className="w-11 h-11 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 group-hover:bg-blue-500/20 group-hover:scale-110 transition-all duration-300">
-                                <Mail size={19} />
-                            </div>
-                            <div className="text-left">
-                                <p className="text-xs font-medium text-[var(--muted-foreground)] mb-0.5">Email</p>
-                                <p className="text-sm font-bold text-[var(--foreground)]">Send an Email</p>
-                            </div>
-                        </div>
-                        <motion.span
-                            className="text-sm text-blue-400 font-semibold ml-2"
-                            animate={{ x: [0, 4, 0] }}
-                            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                        >
-                            →
-                        </motion.span>
-                    </motion.a>
-
-                    {/* WhatsApp card */}
-                    <motion.a
-                        href={`https://wa.me/${cmsSettings.phone.replace(/[^0-9]/g, "")}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        initial={{ opacity: 0, y: 30, scale: 0.96 }}
-                        animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-                        transition={{ delay: 0.32, duration: 0.4, ease: pmEase.entrance }}
-                        whileHover={{ scale: 1.02, y: -2, transition: { duration: 0.22, ease: pmEase.smooth } }}
-                        className="group flex-1 flex items-center justify-between p-5 rounded-2xl border border-[var(--border)] bg-[var(--card)] hover:border-green-500/40 hover:shadow-[var(--pm-shadow-premium)] transition-all duration-300"
-                    >
-                        <div className="flex items-center gap-3">
-                            <div className="w-11 h-11 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center text-green-400 group-hover:bg-green-500/20 group-hover:scale-110 transition-all duration-300">
-                                <Phone size={19} />
-                            </div>
-                            <div className="text-left">
-                                <p className="text-xs font-medium text-[var(--muted-foreground)] mb-0.5">WhatsApp</p>
-                                <p className="text-sm font-bold text-[var(--foreground)]">Let's Chat</p>
-                            </div>
-                        </div>
-                        <motion.span
-                            className="text-sm text-green-400 font-semibold ml-2"
-                            animate={{ x: [0, 4, 0] }}
-                            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                        >
-                            →
-                        </motion.span>
-                    </motion.a>
-                </div>
 
                 {/* Payment Methods */}
                 <motion.div

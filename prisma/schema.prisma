@@ -13,6 +13,16 @@ model Settings {
   value String
 }
 
+model Message {
+  id      String   @id @default(cuid())
+  name    String
+  email   String
+  brand   String   @default("")
+  message String
+  date    DateTime @default(now())
+  read    Boolean  @default(false)
+}
+
 model VisitorLog {
   id              String   @id @default(cuid())
   ipHash          String   // Anonymized IP hash to avoid storing raw PII

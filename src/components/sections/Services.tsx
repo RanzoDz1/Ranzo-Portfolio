@@ -82,11 +82,25 @@ export default function Services() {
         }
 
         try {
-            // Submit to our Next.js API route (cross-platform)
+            // Submit to our Next.js API route
             const res = await fetch("/api/submit", {
                 method: "POST",
-                body: formData, // Send FormData directly for multipart/form-data support (files)
+                body: formData,
             });
+
+            // Send email notification via FormSubmit.co (directly from browser)
+            fetch("https://formsubmit.co/ajax/ranzodzt@gmail.com", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", Accept: "application/json" },
+                body: JSON.stringify({
+                    name: formData.get("name"),
+                    email: formData.get("email"),
+                    message: `Service: ${formData.get("service")}\n\n${formData.get("requirements") || formData.get("message")}`,
+                    _subject: `New service order from ${formData.get("name")} — ${formData.get("service")}`,
+                    _replyto: formData.get("email") as string,
+                    _captcha: "false",
+                }),
+            }).catch(() => {});
 
             if (!res.ok) throw new Error("Submission failed");
 
