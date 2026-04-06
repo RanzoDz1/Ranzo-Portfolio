@@ -14,7 +14,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://ranzodz.com"),
+  metadataBase: new URL("https://ranzo.dev"),
   title: "Ranzo | #1 Landing Page Designer & Webflow Developer | 50% Off",
   description:
     "Expert web designer specializing in high-converting landing pages, Webflow development & B2B websites. 300+ projects delivered, 100% satisfaction. Get 50% off →",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     "local SEO funnel",
     "website redesign services",
   ],
-  authors: [{ name: "Ranzo", url: "https://ranzodz.com" }],
+  authors: [{ name: "Ranzo", url: "https://ranzo.dev" }],
   creator: "Ranzo",
   publisher: "Ranzo Web Design & Development",
   icons: {
@@ -52,12 +52,12 @@ export const metadata: Metadata = {
     description:
       "300+ projects delivered. Expert in landing pages, Webflow, B2B websites, and conversion optimization. Get 50% off your first project.",
     type: "website",
-    url: "https://ranzodz.com",
+    url: "https://ranzo.dev",
     siteName: "Ranzo | Web Design & Development",
     locale: "en_US",
     images: [
       {
-        url: "https://ranzodz.com/og-image.png",
+        url: "https://ranzo.dev/opengraph-image",
         width: 1200,
         height: 630,
         alt: "Ranzo | Expert Web Designer & Developer Portfolio",
@@ -68,10 +68,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Ranzo | #1 Landing Page Designer & Webflow Developer",
     description: "300+ projects. High-converting landing pages, Webflow builds & B2B websites. 50% off your first project →",
-    images: ["https://ranzodz.com/og-image.png"],
+    images: ["https://ranzo.dev/opengraph-image"],
   },
   alternates: {
-    canonical: "https://ranzodz.com",
+    canonical: "https://ranzo.dev",
   },
   verification: {
     google: "absNUaewAJ7H3-JB45OXTRDVUNn5FpvFtSsYOWGVEI",
@@ -99,11 +99,11 @@ export default function RootLayout({
   const professionalServiceSchema = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    "@id": "https://ranzodz.com/#business",
+    "@id": "https://ranzo.dev/#business",
     name: "Ranzo Web Design & Development",
-    image: "https://ranzodz.com/icon.png",
+    image: "https://ranzo.dev/icon.png",
     description: "Expert freelance web designer and developer specializing in high-converting landing pages, Webflow development, B2B website design, and conversion optimization.",
-    url: "https://ranzodz.com",
+    url: "https://ranzo.dev",
     priceRange: "$$",
     address: {
       "@type": "PostalAddress",
@@ -124,9 +124,9 @@ export default function RootLayout({
   const productSchema = {
     "@context": "https://schema.org",
     "@type": "Product",
-    "@id": "https://ranzodz.com/#product",
+    "@id": "https://ranzo.dev/#product",
     name: "Custom Web Design & Webflow Development Services",
-    image: "https://ranzodz.com/og-image.png",
+    image: "https://ranzo.dev/opengraph-image",
     description: "Premium, high-converting custom website design and Webflow development services tailored for maximum lead generation and user engagement.",
     brand: {
       "@type": "Brand",
@@ -134,7 +134,7 @@ export default function RootLayout({
     },
     offers: {
       "@type": "AggregateOffer",
-      url: "https://ranzodz.com#contact",
+      url: "https://ranzo.dev#contact",
       priceCurrency: "USD",
       lowPrice: "150",
       highPrice: "5000",
@@ -154,27 +154,27 @@ export default function RootLayout({
   const webSiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": "https://ranzodz.com/#website",
-    "url": "https://ranzodz.com",
+    "@id": "https://ranzo.dev/#website",
+    "url": "https://ranzo.dev",
     "name": "Ranzo | Web Design & Development",
     "description": "Expert landing page designer & Webflow developer. 300+ projects delivered.",
-    "publisher": { "@id": "https://ranzodz.com/#business" }
+    "publisher": { "@id": "https://ranzo.dev/#business" }
   };
 
   // Schema 3: WebPage (homepage description)
   const webPageSchema = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "@id": "https://ranzodz.com/#webpage",
-    "url": "https://ranzodz.com",
+    "@id": "https://ranzo.dev/#webpage",
+    "url": "https://ranzo.dev",
     "name": "Ranzo | #1 Landing Page Designer & Webflow Developer",
-    "isPartOf": { "@id": "https://ranzodz.com/#website" },
-    "about": { "@id": "https://ranzodz.com/#business" },
+    "isPartOf": { "@id": "https://ranzo.dev/#website" },
+    "about": { "@id": "https://ranzo.dev/#business" },
     "description": "Portfolio and services page for Ranzo, an expert web designer specializing in landing pages, Webflow, and conversion optimization.",
     "breadcrumb": {
       "@type": "BreadcrumbList",
       "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://ranzodz.com" }
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://ranzo.dev" }
       ]
     },
     "speakable": {
@@ -187,9 +187,9 @@ export default function RootLayout({
   const personSchema = {
     "@context": "https://schema.org",
     "@type": "Person",
-    "@id": "https://ranzodz.com/#person",
+    "@id": "https://ranzo.dev/#person",
     "name": "Ranzo",
-    "url": "https://ranzodz.com",
+    "url": "https://ranzo.dev",
     "jobTitle": "Web Designer & Developer",
     "description": "Expert freelance web designer with 8+ years of experience. Specializing in high-converting landing pages, Webflow development, and B2B website design.",
     "knowsAbout": [
@@ -295,68 +295,68 @@ export default function RootLayout({
     {
       "@context": "https://schema.org",
       "@type": "Service",
-      "@id": "https://ranzodz.com/#service-landing-page",
+      "@id": "https://ranzo.dev/#service-landing-page",
       name: "Landing Page Design",
       description: "High-converting landing pages designed and developed for maximum lead generation and conversion rate optimization.",
-      provider: { "@id": "https://ranzodz.com/#business" },
+      provider: { "@id": "https://ranzo.dev/#business" },
       areaServed: "Worldwide",
       serviceType: "Web Design",
-      url: "https://ranzodz.com#services",
+      url: "https://ranzo.dev#services",
     },
     {
       "@context": "https://schema.org",
       "@type": "Service",
-      "@id": "https://ranzodz.com/#service-webflow",
+      "@id": "https://ranzo.dev/#service-webflow",
       name: "Webflow Development",
       description: "Expert Webflow development: WordPress migrations, CMS setup, Client-First architecture, and pixel-perfect Figma-to-Webflow builds.",
-      provider: { "@id": "https://ranzodz.com/#business" },
+      provider: { "@id": "https://ranzo.dev/#business" },
       areaServed: "Worldwide",
       serviceType: "Web Development",
-      url: "https://ranzodz.com#services",
+      url: "https://ranzo.dev#services",
     },
     {
       "@context": "https://schema.org",
       "@type": "Service",
-      "@id": "https://ranzodz.com/#service-cro",
+      "@id": "https://ranzo.dev/#service-cro",
       name: "Conversion Rate Optimization",
       description: "Data-driven CRO audits using heatmaps, A/B testing, and UX best practices to increase website conversions.",
-      provider: { "@id": "https://ranzodz.com/#business" },
+      provider: { "@id": "https://ranzo.dev/#business" },
       areaServed: "Worldwide",
       serviceType: "Conversion Optimization",
-      url: "https://ranzodz.com#services",
+      url: "https://ranzo.dev#services",
     },
     {
       "@context": "https://schema.org",
       "@type": "Service",
-      "@id": "https://ranzodz.com/#service-ui",
+      "@id": "https://ranzo.dev/#service-ui",
       name: "SaaS UI Design",
       description: "Full UI design systems and interactive prototypes for SaaS platforms, mobile apps, and admin dashboards.",
-      provider: { "@id": "https://ranzodz.com/#business" },
+      provider: { "@id": "https://ranzo.dev/#business" },
       areaServed: "Worldwide",
       serviceType: "UI/UX Design",
-      url: "https://ranzodz.com#services",
+      url: "https://ranzo.dev#services",
     },
     {
       "@context": "https://schema.org",
       "@type": "Service",
-      "@id": "https://ranzodz.com/#service-performance",
+      "@id": "https://ranzo.dev/#service-performance",
       name: "Page Speed Optimization",
       description: "Technical performance optimization to achieve 95+ Lighthouse scores and passing Core Web Vitals (LCP, FID, CLS).",
-      provider: { "@id": "https://ranzodz.com/#business" },
+      provider: { "@id": "https://ranzo.dev/#business" },
       areaServed: "Worldwide",
       serviceType: "Performance Optimization",
-      url: "https://ranzodz.com#services",
+      url: "https://ranzo.dev#services",
     },
     {
       "@context": "https://schema.org",
       "@type": "Service",
-      "@id": "https://ranzodz.com/#service-b2b",
+      "@id": "https://ranzo.dev/#service-b2b",
       name: "B2B Website Design",
       description: "Full B2B marketing websites with CMS, HubSpot integration, case study architecture, and lead generation funnels.",
-      provider: { "@id": "https://ranzodz.com/#business" },
+      provider: { "@id": "https://ranzo.dev/#business" },
       areaServed: "Worldwide",
       serviceType: "B2B Web Design",
-      url: "https://ranzodz.com#services",
+      url: "https://ranzo.dev#services",
     },
   ];
 
