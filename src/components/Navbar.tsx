@@ -8,6 +8,7 @@ import { useTheme } from "@/context/ThemeContext";
 import { smoothScrollTo } from "@/lib/smoothScroll";
 
 const navLinks = [
+    { href: "#hero", label: "Home" },
     { href: "#about", label: "About" },
     { href: "#projects", label: "Projects" },
     { href: "#services", label: "Services" },
