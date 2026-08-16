@@ -151,8 +151,7 @@ export default function Skills() {
                                     initial={{ opacity: 0, scale: 0.85 }}
                                     animate={isInView ? { opacity: 1, scale: 1 } : {}}
                                     transition={{ duration: 0.5, delay: 0.15 + i * 0.05, ease: pmEase.entrance }}
-                                    whileHover={{ scale: 1.08, y: -4, transition: { duration: 0.25, ease: pmEase.smooth } }}
-                                    className="flex flex-col items-center gap-2 p-4 rounded-xl border border-[var(--border)] bg-[var(--card)] hover:border-blue-500/30 hover:shadow-[var(--pm-shadow-mid)] transition-all duration-300 cursor-default"
+                                    className="flex flex-col items-center gap-2 p-4 rounded-xl border border-[var(--border)] bg-[var(--card)] hover:border-blue-500/30 hover:-translate-y-1 hover:shadow-[var(--pm-shadow-mid)] transition-all duration-200 cursor-default"
                                 >
                                     <span className="text-2xl">{tool.emoji}</span>
                                     <span className="text-xs font-medium text-[var(--muted-foreground)] text-center">
@@ -206,13 +205,12 @@ export default function Skills() {
                                 </div>
                                 <div className="flex flex-wrap gap-2">
                                     {group.items.map((item) => (
-                                        <motion.span
+                                        <span
                                             key={`${group.title}-${item}`}
-                                            whileHover={{ y: -2, transition: { duration: 0.2, ease: pmEase.smooth } }}
-                                            className="px-3 py-1.5 rounded-lg text-xs font-medium border border-[var(--border)] bg-[var(--card)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:border-blue-500/30 transition-colors duration-300 cursor-default"
+                                            className="px-3 py-1.5 rounded-lg text-xs font-medium border border-[var(--border)] bg-[var(--card)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:border-blue-500/30 hover:-translate-y-0.5 transition-all duration-200 cursor-default"
                                         >
                                             {item}
-                                        </motion.span>
+                                        </span>
                                     ))}
                                 </div>
                             </motion.div>
