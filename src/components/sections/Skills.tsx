@@ -23,6 +23,59 @@ const toolLogos = [
     { name: "SEMrush", emoji: "📊" },
 ];
 
+const toolkitGroups: { title: string; dot: string; items: string[] }[] = [
+    {
+        title: "Languages",
+        dot: "from-violet-500 to-purple-400",
+        items: [
+            "TypeScript", "JavaScript", "Python", "PHP", "C#", "Java", "Go",
+            "Rust", "C++", "Ruby", "Swift", "Kotlin", "SQL", "Bash", "HTML5", "CSS3",
+        ],
+    },
+    {
+        title: "Frameworks & Runtimes",
+        dot: "from-blue-500 to-cyan-400",
+        items: [
+            "Next.js", "React", "Vue", "Svelte", "Node.js", "Laravel", ".NET",
+            "Django", "FastAPI", "Express", "Spring Boot", "Tailwind CSS",
+            "Framer Motion", "React Native", "Flutter", "WordPress",
+        ],
+    },
+    {
+        title: "Data & Backend",
+        dot: "from-emerald-500 to-teal-400",
+        items: [
+            "PostgreSQL", "MySQL", "MongoDB", "Redis", "Supabase", "Firebase",
+            "Prisma", "GraphQL", "REST APIs", "Airtable",
+        ],
+    },
+    {
+        title: "Cloud & DevOps",
+        dot: "from-sky-500 to-indigo-400",
+        items: [
+            "Vercel", "AWS", "Docker", "GitHub Actions", "Netlify", "Cloudflare",
+            "Nginx", "Linux", "Git", "CI/CD",
+        ],
+    },
+    {
+        title: "AI & Automation",
+        dot: "from-amber-500 to-orange-400",
+        items: [
+            "Claude Code", "Anthropic API", "OpenAI API", "LangChain",
+            "MCP Servers", "n8n", "Make", "Zapier", "Prompt Engineering",
+            "RAG Pipelines",
+        ],
+    },
+    {
+        title: "Design & Growth",
+        dot: "from-rose-500 to-pink-400",
+        items: [
+            "Figma", "Webflow", "Framer", "Adobe XD", "Photoshop",
+            "SEO Strategy", "GA4", "SEMrush", "Notion", "Shopify",
+        ],
+    },
+];
+
 export default function Skills() {
     const ref = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, { once: true, margin: "0px" });
@@ -89,7 +142,7 @@ export default function Skills() {
                             transition={{ delay: 0.1, duration: 0.5 }}
                             className="text-xs font-semibold text-[var(--muted-foreground)] uppercase tracking-widest mb-6"
                         >
-                            Daily Toolkit
+                            Core Stack
                         </motion.p>
                         <div className="grid grid-cols-4 gap-3">
                             {toolLogos.map((tool, i) => (
@@ -98,7 +151,8 @@ export default function Skills() {
                                     initial={{ opacity: 0, scale: 0.85 }}
                                     animate={isInView ? { opacity: 1, scale: 1 } : {}}
                                     transition={{ duration: 0.5, delay: 0.15 + i * 0.05, ease: pmEase.entrance }}
-                                    className="flex flex-col items-center gap-2 p-4 rounded-xl border border-[var(--border)] bg-[var(--card)] hover:border-blue-500/30 hover:-translate-y-1 hover:shadow-[var(--pm-shadow-mid)] transition-all duration-200 cursor-default"
+                                    whileHover={{ scale: 1.08, y: -4, transition: { duration: 0.25, ease: pmEase.smooth } }}
+                                    className="flex flex-col items-center gap-2 p-4 rounded-xl border border-[var(--border)] bg-[var(--card)] hover:border-blue-500/30 hover:shadow-[var(--pm-shadow-mid)] transition-all duration-300 cursor-default"
                                 >
                                     <span className="text-2xl">{tool.emoji}</span>
                                     <span className="text-xs font-medium text-[var(--muted-foreground)] text-center">
@@ -122,6 +176,47 @@ export default function Skills() {
                                 </span>
                             ))}
                         </motion.div>
+                    </div>
+                </div>
+
+                {/* Daily Toolkit */}
+                <div className="mt-20">
+                    <motion.p
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={isInView ? { opacity: 1, y: 0 } : {}}
+                        transition={{ delay: 0.1, duration: 0.5, ease: pmEase.entrance }}
+                        className="text-xs font-semibold text-[var(--muted-foreground)] uppercase tracking-widest mb-8"
+                    >
+                        Daily Toolkit
+                    </motion.p>
+
+                    <div className="space-y-8">
+                        {toolkitGroups.map((group, gi) => (
+                            <motion.div
+                                key={group.title}
+                                initial={{ opacity: 0, y: 16 }}
+                                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                                transition={{ duration: 0.5, delay: 0.15 + gi * 0.07, ease: pmEase.entrance }}
+                            >
+                                <div className="flex items-center gap-2 mb-3">
+                                    <span className={`w-2.5 h-2.5 rounded-full bg-gradient-to-r ${group.dot}`} />
+                                    <span className="text-sm font-semibold text-[var(--foreground)]">
+                                        {group.title}
+                                    </span>
+                                </div>
+                                <div className="flex flex-wrap gap-2">
+                                    {group.items.map((item) => (
+                                        <motion.span
+                                            key={`${group.title}-${item}`}
+                                            whileHover={{ y: -2, transition: { duration: 0.2, ease: pmEase.smooth } }}
+                                            className="px-3 py-1.5 rounded-lg text-xs font-medium border border-[var(--border)] bg-[var(--card)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:border-blue-500/30 transition-colors duration-300 cursor-default"
+                                        >
+                                            {item}
+                                        </motion.span>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        ))}
                     </div>
                 </div>
             </div>
