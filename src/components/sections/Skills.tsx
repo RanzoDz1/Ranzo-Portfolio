@@ -179,35 +179,36 @@ export default function Skills() {
                 </div>
 
                 {/* Daily Toolkit */}
-                <div className="mt-20">
+                <div className="mt-14">
                     <motion.p
                         initial={{ opacity: 0, y: 10 }}
                         animate={isInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ delay: 0.1, duration: 0.5, ease: pmEase.entrance }}
-                        className="text-xs font-semibold text-[var(--muted-foreground)] uppercase tracking-widest mb-8"
+                        className="text-xs font-semibold text-[var(--muted-foreground)] uppercase tracking-widest mb-4"
                     >
                         Daily Toolkit
                     </motion.p>
 
-                    <div className="space-y-8">
+                    <div className="border-t border-[var(--border)]">
                         {toolkitGroups.map((group, gi) => (
                             <motion.div
                                 key={group.title}
-                                initial={{ opacity: 0, y: 16 }}
+                                initial={{ opacity: 0, y: 10 }}
                                 animate={isInView ? { opacity: 1, y: 0 } : {}}
-                                transition={{ duration: 0.5, delay: 0.15 + gi * 0.07, ease: pmEase.entrance }}
+                                transition={{ duration: 0.45, delay: 0.12 + gi * 0.05, ease: pmEase.entrance }}
+                                className="flex flex-col sm:flex-row sm:items-start gap-1.5 sm:gap-5 py-3 border-b border-[var(--border)]"
                             >
-                                <div className="flex items-center gap-2 mb-3">
-                                    <span className={`w-2.5 h-2.5 rounded-full bg-gradient-to-r ${group.dot}`} />
-                                    <span className="text-sm font-semibold text-[var(--foreground)]">
+                                <div className="flex items-center gap-2 sm:w-40 sm:shrink-0 sm:pt-1">
+                                    <span className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${group.dot}`} />
+                                    <span className="text-[11px] font-semibold uppercase tracking-wide text-[var(--muted-foreground)]">
                                         {group.title}
                                     </span>
                                 </div>
-                                <div className="flex flex-wrap gap-2">
+                                <div className="flex flex-wrap gap-1.5">
                                     {group.items.map((item) => (
                                         <span
                                             key={`${group.title}-${item}`}
-                                            className="px-3 py-1.5 rounded-lg text-xs font-medium border border-[var(--border)] bg-[var(--card)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:border-blue-500/30 hover:-translate-y-0.5 transition-all duration-200 cursor-default"
+                                            className="px-2.5 py-1 rounded-md text-[11px] font-medium border border-[var(--border)] bg-[var(--card)] text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:border-blue-500/40 transition-colors duration-200 cursor-default"
                                         >
                                             {item}
                                         </span>
