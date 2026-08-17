@@ -1,18 +1,29 @@
 # Ranzo Portfolio
 
-A premium portfolio website built with Next.js 16.1.6
+Persönliches Portfolio mit Projektübersicht, Kontaktformular und geschütztem Admin-Bereich für eingehende Anfragen.
 
-Resend (Email Notifications):
-Resend is configured to send you an email at `ranzodzt@gmail.com` every time someone submits a message/request.
-- Go to [Resend](https://resend.com/api-keys) and create an API Key.
-- In your Vercel Dashboard, go to **Settings** -> **Environment Variables**.
-- Add a new variable:
-  - Key: `RESEND_API_KEY`
-  - Value: `your_resend_api_key_here`
+**Live:** https://ranzo-portfolio.vercel.app
 
-> **Note**: After adding these variables, make sure to go to **Deployments** and click **Redeploy** to apply them.
+## Stack
 
-## Admin Dashboard Access
-The admin dashboard is located at `/admin`.
-- **Username**: `username`
-- **Password**: `********`
+Next.js 16, TypeScript, Prisma, Resend, Deployment über Vercel
+
+## Features
+
+- Responsive Portfolio-Seite mit Projektübersicht
+- Kontaktformular mit E-Mail-Benachrichtigung über Resend
+- Geschützter Admin-Bereich unter /admin zur Verwaltung der Anfragen
+- Persistenz der Anfragen über Prisma
+
+## Setup
+
+    npm install
+    npm run dev
+
+## Konfiguration
+
+Schlüssel und Zugangsdaten werden ausschließlich über Umgebungsvariablen gesetzt,
+in Vercel unter Settings, Environment Variables. Unter anderem RESEND_API_KEY für
+den Versand der Benachrichtigungen sowie die Zugangsdaten für den Admin-Bereich.
+
+Nach dem Anlegen der Variablen unter Deployments einmal Redeploy auslösen.
