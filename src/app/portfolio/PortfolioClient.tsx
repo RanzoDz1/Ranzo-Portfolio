@@ -7,8 +7,8 @@ import {
   useMotionValue,
   useMotionTemplate,
   useScroll,
-  useSpring,
-  useTransform,
+
+
   animate,
 } from "framer-motion";
 import {
@@ -32,6 +32,7 @@ import {
   PenTool,
   Search,
   Wrench,
+  Languages,
 } from "lucide-react";
 
 const EMAIL = "khalfiabdullah@gmail.com";
@@ -127,10 +128,10 @@ function Reveal({ children, delay = 0, className = "" }: { children: React.React
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: 28 }}
+      initial={{ opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.8, delay, ease }}
+      transition={{ duration: 0.5, delay, ease }}
     >
       {children}
     </motion.div>
@@ -174,7 +175,7 @@ function SpotlightCard({ children, className = "" }: { children: React.ReactNode
         mx.set(-300);
         my.set(-300);
       }}
-      className={`group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl transition-colors duration-500 hover:border-white/20 ${className}`}
+      className={`group relative overflow-hidden rounded-3xl border border-white/10 bg-[#0b0c12] transition-colors duration-500 hover:border-white/20 ${className}`}
     >
       <motion.div className="pointer-events-none absolute inset-0 z-0" style={{ background: bg }} />
       <div className="relative z-10 h-full">{children}</div>
@@ -204,47 +205,24 @@ function CopyEmail() {
 
 export default function PortfolioClient() {
   const { scrollYProgress } = useScroll();
-  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
-  const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress: heroProg } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const heroY = useTransform(heroProg, [0, 1], [0, 140]);
-  const heroOpacity = useTransform(heroProg, [0, 0.8], [1, 0]);
-
-  const cx = useMotionValue(-500);
-  const cy = useMotionValue(-500);
-  const glow = useMotionTemplate`radial-gradient(600px circle at ${cx}px ${cy}px, rgba(99,102,241,0.10), transparent 70%)`;
 
   const headline = ["Webanwendungen,", "die", "begeistern", "und", "zuverlässig", "laufen."];
 
   return (
     <div
       className="relative min-h-screen overflow-x-hidden bg-[#06070b] text-white antialiased selection:bg-violet-500/40"
-      onMouseMove={(e) => {
-        cx.set(e.clientX);
-        cy.set(e.clientY);
-      }}
       style={{ fontFeatureSettings: '"ss01", "cv11"' }}
     >
-      <motion.div className="fixed left-0 right-0 top-0 z-[60] h-[2px] origin-left bg-gradient-to-r from-indigo-400 via-violet-400 to-fuchsia-400" style={{ scaleX: progress }} />
-      <motion.div className="pointer-events-none fixed inset-0 z-0" style={{ background: glow }} />
+      <motion.div className="fixed left-0 right-0 top-0 z-[60] h-[2px] origin-left bg-gradient-to-r from-indigo-400 via-violet-400 to-fuchsia-400 will-change-transform" style={{ scaleX: scrollYProgress }} />
 
-      {/* Aurora background */}
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
-        <motion.div
-          className="absolute -left-40 -top-40 h-[42rem] w-[42rem] rounded-full bg-indigo-600/25 blur-[140px]"
-          animate={{ x: [0, 80, -40, 0], y: [0, 60, 20, 0] }}
-          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute -right-40 top-20 h-[36rem] w-[36rem] rounded-full bg-fuchsia-600/20 blur-[140px]"
-          animate={{ x: [0, -70, 30, 0], y: [0, 40, -30, 0] }}
-          transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute left-1/3 top-[70rem] h-[40rem] w-[40rem] rounded-full bg-cyan-500/10 blur-[160px]"
-          animate={{ x: [0, 60, -60, 0] }}
-          transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
-        />
+      {/* Static aurora background: plain gradients, no blur filters, no JS animation */}
+      <div
+        className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+        style={{
+          background:
+            "radial-gradient(45rem 45rem at -5% -5%, rgba(79,70,229,0.22), transparent 60%), radial-gradient(38rem 38rem at 105% 10%, rgba(192,38,211,0.16), transparent 60%), radial-gradient(42rem 42rem at 40% 75rem, rgba(6,182,212,0.07), transparent 60%)",
+        }}
+      >
         <div
           className="absolute inset-0 opacity-[0.035]"
           style={{
@@ -264,7 +242,7 @@ export default function PortfolioClient() {
         transition={{ duration: 0.8, ease }}
         className="fixed inset-x-0 top-4 z-50 mx-auto w-[calc(100%-2rem)] max-w-5xl"
       >
-        <div className="flex items-center justify-between rounded-full border border-white/10 bg-black/40 px-5 py-3 backdrop-blur-2xl">
+        <div className="flex items-center justify-between rounded-full border border-white/10 bg-[#0a0b10]/85 px-5 py-3">
           <a href="#top" className="text-sm font-semibold tracking-tight">
             Abdullah Khalfi
           </a>
@@ -285,8 +263,8 @@ export default function PortfolioClient() {
 
       <main id="top" className="relative z-10">
         {/* Hero */}
-        <section ref={heroRef} className="relative mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-center px-6 pb-20 pt-36">
-          <motion.div style={{ y: heroY, opacity: heroOpacity }}>
+        <section className="relative mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-center px-6 pb-20 pt-36">
+          <div>
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -305,8 +283,8 @@ export default function PortfolioClient() {
                 <motion.span
                   key={i}
                   className={`mr-[0.22em] inline-block ${w === "begeistern" ? "bg-gradient-to-r from-indigo-300 via-violet-300 to-fuchsia-300 bg-clip-text text-transparent" : ""}`}
-                  initial={{ opacity: 0, y: 40, filter: "blur(12px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.9, delay: 0.25 + i * 0.08, ease }}
                 >
                   {w}
@@ -339,13 +317,13 @@ export default function PortfolioClient() {
               </a>
               <a
                 href={`mailto:${EMAIL}`}
-                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-medium text-white backdrop-blur transition hover:bg-white/10"
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-medium text-white transition hover:bg-white/10"
               >
                 <Mail className="h-4 w-4" />
                 Nachricht schreiben
               </a>
             </motion.div>
-          </motion.div>
+          </div>
 
           <motion.div
             initial={{ opacity: 0 }}
@@ -420,7 +398,7 @@ export default function PortfolioClient() {
                           <span className="h-2.5 w-2.5 rounded-full bg-white/10" />
                         </div>
                         <motion.div
-                          className="absolute bottom-0 left-6 right-6 top-12 rounded-t-xl border border-white/15 bg-black/30 p-4 backdrop-blur-md"
+                          className="absolute bottom-0 left-6 right-6 top-12 rounded-t-xl border border-white/15 bg-black/30 p-4"
                           whileHover={{ y: -6 }}
                           transition={{ duration: 0.5, ease }}
                         >
@@ -523,10 +501,9 @@ export default function PortfolioClient() {
         <section id="kontakt" className="mx-auto max-w-6xl scroll-mt-28 px-6 pb-16 pt-24">
           <Reveal>
             <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-gradient-to-br from-indigo-500/15 via-violet-500/10 to-fuchsia-500/10 p-8 sm:p-14">
-              <motion.div
-                className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-violet-500/30 blur-[100px]"
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+              <div
+                className="pointer-events-none absolute -right-40 -top-40 h-[28rem] w-[28rem]"
+                style={{ background: "radial-gradient(circle, rgba(139,92,246,0.28), transparent 65%)" }}
               />
               <div className="relative grid gap-12 lg:grid-cols-[1.2fr_1fr]">
                 <div>
@@ -555,7 +532,7 @@ export default function PortfolioClient() {
                   </div>
                 </div>
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-black/30 p-5 backdrop-blur">
+                  <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-black/30 p-5">
                     <div className="flex min-w-0 items-center gap-4">
                       <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/10">
                         <Mail className="h-5 w-5" />
@@ -571,7 +548,7 @@ export default function PortfolioClient() {
                   </div>
                   <a
                     href={PHONE_HREF}
-                    className="flex items-center gap-4 rounded-2xl border border-white/10 bg-black/30 p-5 backdrop-blur transition hover:border-white/20"
+                    className="flex items-center gap-4 rounded-2xl border border-white/10 bg-black/30 p-5 transition hover:border-white/20"
                   >
                     <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10">
                       <Phone className="h-5 w-5" />
@@ -581,13 +558,22 @@ export default function PortfolioClient() {
                       <div className="font-medium">{PHONE}</div>
                     </div>
                   </a>
-                  <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-black/30 p-5 backdrop-blur">
+                  <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-black/30 p-5">
                     <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10">
                       <MapPin className="h-5 w-5" />
                     </span>
                     <div>
                       <div className="text-xs text-white/45">Standort</div>
-                      <div className="font-medium">Freiburg im Breisgau · Deutsch (C1), Englisch, Arabisch</div>
+                      <div className="font-medium">Freiburg im Breisgau</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-black/30 p-5">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/10">
+                      <Languages className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <div className="text-xs text-white/45">Sprachen</div>
+                      <div className="font-medium">Deutsch, Englisch, Arabisch</div>
                     </div>
                   </div>
                 </div>
