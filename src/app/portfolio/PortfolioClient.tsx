@@ -18,7 +18,7 @@ import {
   Mail,
   Phone,
   MapPin,
-  Sparkles,
+
   Layers,
   Truck,
   Globe,
@@ -70,15 +70,6 @@ const projects = [
     span: "",
   },
   {
-    icon: Sparkles,
-    tag: "Persönliche Marke",
-    title: "Website für meine Content-Marke",
-    text: "Website zu meinen Reiseinhalten mit über einer Million Followern in den sozialen Medien. Gestaltung, Umsetzung und Betrieb in Eigenregie.",
-    stack: ["Webentwicklung", "Content", "Vercel"],
-    hue: "from-sky-500/30 via-blue-500/20 to-indigo-500/10",
-    span: "",
-  },
-  {
     icon: ShoppingBag,
     tag: "E-Commerce · seit 2021",
     title: "Eigener Onlinehandel",
@@ -94,27 +85,43 @@ const projects = [
     text: "Microsoft 365, Konten und Zugriffsrechte, Hosting, Domains, DNS und Zertifikate sowie die Behebung von Störungen im laufenden Betrieb.",
     stack: ["Microsoft 365", "Hosting", "DNS"],
     hue: "from-cyan-500/30 via-sky-500/20 to-emerald-500/10",
-    span: "md:col-span-2",
+    span: "",
   },
 ];
 
-const stats = [
+const stats: { value: number; prefix: string; suffix: string; label: string; text?: string }[] = [
   { value: 2021, prefix: "seit ", suffix: "", label: "Webentwicklung für Kunden" },
   { value: 10, prefix: "", suffix: "+", label: "veröffentlichte Webprojekte" },
-  { value: 2, prefix: "", suffix: "", label: "Full-Stack-Plattformen" },
-  { value: 1, prefix: "", suffix: " Mio.+", label: "Follower als eigene Marke" },
+  { value: 5, prefix: "", suffix: "+ Jahre", label: "Praxis in Web und IT" },
+  { value: 0, prefix: "", suffix: "", label: "Kunden in Deutschland und den USA", text: "DE · USA" },
 ];
 
 const marquee = [
   "React", "Next.js", "TypeScript", "JavaScript", "Node.js", "Python", "SQL", "MongoDB",
-  "Tailwind CSS", "REST-APIs", "Git", "Vercel", "Shopify", "Microsoft 365", "Claude Code",
+  "Tailwind CSS", "C#", ".NET", "PostgreSQL", "Docker", "REST-APIs", "GraphQL", "Git", "Vercel", "AWS", "Shopify", "Microsoft 365", "Claude Code",
 ];
 
 const skills = [
-  { icon: Code2, group: "Frontend", items: ["React", "Next.js", "TypeScript", "JavaScript", "HTML/CSS", "Tailwind CSS", "Framer Motion"] },
-  { icon: Database, group: "Backend und Daten", items: ["Node.js", "Python", "SQL", "MongoDB", "REST-APIs", "Webhooks"] },
-  { icon: Cloud, group: "Betrieb und Deployment", items: ["Vercel", "Git", "Hosting", "Domains und DNS", "Zertifikate"] },
-  { icon: Bot, group: "KI und Werkzeuge", items: ["Claude Code", "KI-gestützte Entwicklung", "Automatisierung", "Microsoft 365"] },
+  {
+    icon: Code2,
+    group: "Frontend",
+    items: ["React", "Next.js", "TypeScript", "JavaScript", "HTML5", "CSS3", "Tailwind CSS", "Vue.js", "Angular", "Redux", "Framer Motion", "Responsive Design", "Barrierefreiheit"],
+  },
+  {
+    icon: Database,
+    group: "Backend und Daten",
+    items: ["Node.js", "Express", "Python", "FastAPI", "C#", ".NET", "Java", "PHP", "Laravel", "REST-APIs", "GraphQL", "SQL", "PostgreSQL", "MySQL", "MongoDB", "Prisma", "Redis"],
+  },
+  {
+    icon: Cloud,
+    group: "Betrieb und Deployment",
+    items: ["Vercel", "Docker", "Git", "GitHub Actions", "CI/CD", "AWS", "Azure", "Linux", "Nginx", "Hosting", "Domains und DNS", "SSL-Zertifikate"],
+  },
+  {
+    icon: Bot,
+    group: "KI und Werkzeuge",
+    items: ["Claude Code", "Claude API", "OpenAI API", "KI-Agenten", "Automatisierung", "n8n", "Webhooks", "Jest", "Playwright", "Figma", "Jira", "Microsoft 365", "Shopify"],
+  },
 ];
 
 const steps = [
@@ -347,7 +354,7 @@ export default function PortfolioClient() {
             {stats.map((s, i) => (
               <Reveal key={s.label} delay={i * 0.08} className="bg-[#06070b] p-7">
                 <div className="bg-gradient-to-b from-white to-white/60 bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl">
-                  <Counter value={s.value} prefix={s.prefix} suffix={s.suffix} />
+                  {s.text ? s.text : <Counter value={s.value} prefix={s.prefix} suffix={s.suffix} />}
                 </div>
                 <div className="mt-2 text-sm text-white/50">{s.label}</div>
               </Reveal>
