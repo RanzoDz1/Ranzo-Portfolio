@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { motion, useInView, useMotionValue, useMotionTemplate, useScroll, animate } from "framer-motion";
 import {
   ArrowUpRight,
@@ -23,6 +24,7 @@ import {
   Search,
   Wrench,
   Languages,
+  Download,
 } from "lucide-react";
 
 type Lang = "de" | "en";
@@ -95,11 +97,14 @@ const t = {
     ],
     cKicker: "Kontakt",
     cTitle: "Lassen Sie uns sprechen.",
-    cText: "Ich bin ab sofort verfügbar, gern in Festanstellung, in Freiburg, hybrid oder remote. Meinen Lebenslauf und Arbeitsproben sende ich Ihnen gern zu.",
+    cText: "Ich bin ab sofort verfügbar, gern in Festanstellung, in Freiburg, hybrid oder remote. Meinen Lebenslauf können Sie direkt herunterladen, Arbeitsproben zeige ich Ihnen gern im Gespräch.",
     cMail: "E-Mail schreiben",
-    cCv: "Lebenslauf anfordern",
+    cCv: "Lebenslauf herunterladen",
+    cvHref: "/Abdullah_Khalfi_Lebenslauf.pdf",
+    cvFile: "Abdullah_Khalfi_Lebenslauf.pdf",
+    role: "Webentwickler",
+    photoAlt: "Abdullah Khalfi, Webentwickler aus Freiburg",
     mailSubject: "Anfrage%20zu%20Ihrem%20Portfolio",
-    cvSubject: "Anfrage%20Lebenslauf",
     lEmail: "E-Mail",
     lPhone: "Telefon",
     lLocation: "Standort",
@@ -151,11 +156,14 @@ const t = {
     ],
     cKicker: "Contact",
     cTitle: "Let's talk.",
-    cText: "I'm available now, ideally for a permanent role, in Freiburg, hybrid or remote. I'm happy to send you my CV and work samples.",
+    cText: "I'm available now, ideally for a permanent role, in Freiburg, hybrid or remote. You can download my CV right here, and I'm happy to walk you through work samples in a call.",
     cMail: "Send an email",
-    cCv: "Request my CV",
+    cCv: "Download CV",
+    cvHref: "/Abdullah_Khalfi_CV.pdf",
+    cvFile: "Abdullah_Khalfi_CV.pdf",
+    role: "Web Developer",
+    photoAlt: "Abdullah Khalfi, web developer based in Freiburg, Germany",
     mailSubject: "Enquiry%20about%20your%20portfolio",
-    cvSubject: "CV%20request",
     lEmail: "Email",
     lPhone: "Phone",
     lLocation: "Location",
@@ -366,6 +374,8 @@ export default function PortfolioClient({ lang = "de" }: { lang?: Lang }) {
       <main id="top" className="relative z-10">
         {/* Hero */}
         <section className="relative mx-auto flex min-h-[100svh] max-w-6xl flex-col justify-center px-6 pb-20 pt-36">
+          <div className="grid items-center gap-12 lg:grid-cols-[1fr_minmax(0,22rem)] lg:gap-16">
+          <div className="order-2 lg:order-1">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -422,7 +432,50 @@ export default function PortfolioClient({ lang = "de" }: { lang?: Lang }) {
               <Mail className="h-4 w-4" />
               {c.ctaMail}
             </a>
+            <a
+              href={c.cvHref}
+              download={c.cvFile}
+              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-medium text-white transition hover:bg-white/10"
+            >
+              <Download className="h-4 w-4" />
+              {c.cCv}
+            </a>
           </motion.div>
+          </div>
+
+          {/* Portrait */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.94, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.3, ease }}
+            className="order-1 lg:order-2"
+          >
+            <div className="relative w-40 sm:w-48 lg:w-full">
+              <div
+                aria-hidden
+                className="absolute -inset-6 rounded-[2.5rem] opacity-80"
+                style={{ background: "radial-gradient(closest-side, rgba(139,92,246,0.35), transparent)" }}
+              />
+              <div className="relative rounded-[2rem] bg-gradient-to-br from-indigo-400/60 via-violet-400/40 to-fuchsia-400/60 p-px shadow-[0_30px_80px_-20px_rgba(76,29,149,0.6)]">
+                <div className="relative aspect-[4/5] overflow-hidden rounded-[calc(2rem-1px)] bg-[#0b0c12]">
+                  <Image
+                    src="/abdullah-khalfi.jpg"
+                    alt={c.photoAlt}
+                    fill
+                    priority
+                    sizes="(min-width: 1024px) 352px, 192px"
+                    className="object-cover"
+                  />
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#06070b]/70 to-transparent" />
+                </div>
+              </div>
+              <div className="absolute -bottom-4 left-1/2 hidden -translate-x-1/2 whitespace-nowrap rounded-full border border-white/15 bg-[#0a0b10]/90 px-4 py-2 text-sm backdrop-blur-md lg:block">
+                <span className="font-semibold">Abdullah Khalfi</span>
+                <span className="text-white/50"> · {c.role}</span>
+              </div>
+            </div>
+          </motion.div>
+          </div>
 
           <motion.div
             initial={{ opacity: 0 }}
@@ -612,9 +665,11 @@ export default function PortfolioClient({ lang = "de" }: { lang?: Lang }) {
                       <ArrowUpRight className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                     </a>
                     <a
-                      href={`mailto:${EMAIL}?subject=${c.cvSubject}`}
+                      href={c.cvHref}
+                      download={c.cvFile}
                       className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-medium text-white transition hover:bg-white/10"
                     >
+                      <Download className="h-4 w-4" />
                       {c.cCv}
                     </a>
                   </div>
