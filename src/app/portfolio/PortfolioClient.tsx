@@ -24,6 +24,10 @@ import {
   Search,
   Wrench,
   Languages,
+  Users,
+  LayoutDashboard,
+  CalendarCheck,
+  Workflow,
 } from "lucide-react";
 
 type Lang = "de" | "en";
@@ -56,9 +60,18 @@ const marquee = [
 
 const stepIcons = [Search, PenTool, Rocket, Wrench];
 
+const serviceMeta = [
+  { icon: Users, hue: "from-indigo-400/25 to-violet-400/5" },
+  { icon: LayoutDashboard, hue: "from-sky-400/25 to-cyan-400/5" },
+  { icon: CalendarCheck, hue: "from-emerald-400/25 to-teal-400/5" },
+  { icon: Bot, hue: "from-fuchsia-400/25 to-violet-400/5" },
+  { icon: ShoppingBag, hue: "from-amber-400/25 to-orange-400/5" },
+  { icon: Workflow, hue: "from-rose-400/25 to-pink-400/5" },
+];
+
 const t = {
   de: {
-    nav: ["Projekte", "Kenntnisse", "Arbeitsweise", "Kontakt"],
+    nav: ["Projekte", "Leistungen", "Kenntnisse", "Kontakt"],
     contactBtn: "Kontakt",
     badge: "Ab sofort verfügbar · Freiburg, hybrid oder remote",
     headline: ["Webanwendungen,", "die", "begeistern", "und", "zuverlässig", "laufen."],
@@ -82,6 +95,17 @@ const t = {
       { tag: "Websites · Deutschland und USA", title: "Websites für lokale Unternehmen", text: "Unternehmensseiten für Einzelhandel, Lebensmittelhandel, Möbeltischlerei, Reinigungsservice und Entrümpelung. Mobil optimiert, suchmaschinenfreundlich, auf Anfragen ausgerichtet." },
       { tag: "E-Commerce · seit 2021", title: "Eigener Onlinehandel", text: "Aufbau und Betrieb eines eigenen Onlineshops: Produkt- und Stammdaten, Shopsystem, Kampagnen über Meta Ads und laufende Auswertung der Verkäufe." },
       { tag: "IT-Betreuung · seit 2021", title: "IT für eigene Kunden", text: "Microsoft 365, Konten und Zugriffsrechte, Hosting, Domains, DNS und Zertifikate sowie die Behebung von Störungen im laufenden Betrieb." },
+    ],
+    servKicker: "Leistungen",
+    servTitle: "Software, die Arbeit abnimmt.",
+    servText: "Das sind die Lösungen, die Unternehmen am häufigsten brauchen. Ich baue sie passgenau, statt fertige Systeme umzubiegen.",
+    services: [
+      { title: "CRM und Kundenverwaltung", text: "Kunden, Angebote, Aufträge und Aufgaben an einem Ort, mit Suche, Historie und eigenen Rechten je Mitarbeiter." },
+      { title: "Dashboards und Auswertungen", text: "Kennzahlen live im Blick: Umsätze, Bestände oder Anfragen als Diagramme, mit Filtern und Export nach Excel oder PDF." },
+      { title: "Buchungs- und Terminsysteme", text: "Termine, Aufträge oder Ressourcen online buchen, inklusive Bestätigungsmails, Erinnerungen und Kalenderanbindung." },
+      { title: "Automatisierung und KI", text: "Wiederkehrende Aufgaben laufen von selbst: Dokumente auslesen, Daten übertragen, Texte vorbereiten, Assistenten über die Claude- und OpenAI-API." },
+      { title: "Onlineshops und Zahlungen", text: "Shops mit Produktdaten, Versand und Zahlungsanbietern, sauber angebunden an die bestehende Warenwirtschaft." },
+      { title: "Schnittstellen und Integrationen", text: "Systeme sprechen miteinander: REST-APIs, Webhooks und automatische Datenimporte zwischen Shop, Buchhaltung und CRM." },
     ],
     skillKicker: "Kenntnisse",
     skillTitle: "Moderner Stack, sauber umgesetzt.",
@@ -114,7 +138,7 @@ const t = {
     switchLabel: "EN",
   },
   en: {
-    nav: ["Projects", "Skills", "Process", "Contact"],
+    nav: ["Projects", "Services", "Skills", "Contact"],
     contactBtn: "Contact",
     badge: "Available now · Freiburg, Germany · hybrid or remote",
     headline: ["Web", "applications", "that", "impress", "and", "run", "reliably."],
@@ -138,6 +162,17 @@ const t = {
       { tag: "Websites · Germany and US", title: "Websites for local businesses", text: "Business websites for retail, grocery, custom cabinetry, cleaning and clearance services. Mobile-first, search-engine friendly and built to generate enquiries." },
       { tag: "E-commerce · since 2021", title: "Own online store", text: "Built and run my own online store: product data, shop system, Meta Ads campaigns and ongoing sales analysis." },
       { tag: "IT support · since 2021", title: "IT for my own clients", text: "Microsoft 365, accounts and access rights, hosting, domains, DNS and certificates, plus troubleshooting in day-to-day operation." },
+    ],
+    servKicker: "Services",
+    servTitle: "Software that takes work off your desk.",
+    servText: "These are the solutions companies ask for most often. I build them to fit, instead of bending an off-the-shelf system into shape.",
+    services: [
+      { title: "CRM and customer management", text: "Customers, quotes, orders and tasks in one place, with search, full history and per-user permissions." },
+      { title: "Dashboards and reporting", text: "Live numbers at a glance: revenue, stock or enquiries as charts, with filters and export to Excel or PDF." },
+      { title: "Booking and scheduling systems", text: "Book appointments, jobs or resources online, including confirmation emails, reminders and calendar sync." },
+      { title: "Automation and AI", text: "Repetitive work runs by itself: read documents, move data, draft text, assistants built on the Claude and OpenAI APIs." },
+      { title: "Online shops and payments", text: "Shops with product data, shipping and payment providers, cleanly connected to the systems you already run." },
+      { title: "APIs and integrations", text: "Systems that talk to each other: REST APIs, webhooks and automated data transfer between shop, accounting and CRM." },
     ],
     skillKicker: "Skills",
     skillTitle: "A modern stack, cleanly executed.",
@@ -227,41 +262,153 @@ function SpotlightCard({ children, className = "" }: { children: React.ReactNode
   );
 }
 
-/** Mouse-following light. Moved with transform only (GPU-composited), at most one update per frame. */
-function CursorGlow() {
-  const ref = useRef<HTMLDivElement>(null);
+/**
+ * Cursor: ambient light + a precise dot + a trailing ring, all in ONE pointermove
+ * listener and ONE rAF loop. Nothing but `transform` is written per frame, so the
+ * compositor does the work and scrolling stays at full speed. The loop parks itself
+ * as soon as the ring has caught up with the pointer.
+ */
+function PremiumCursor() {
+  const glow = useRef<HTMLDivElement>(null);
+  const dot = useRef<HTMLDivElement>(null);
+  const ring = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    if (window.matchMedia("(pointer: coarse)").matches) return;
-    let x = -1000;
-    let y = -1000;
+    if (!window.matchMedia("(pointer: fine)").matches) return;
+    const root = document.documentElement;
+    root.classList.add("has-premium-cursor");
+
+    let x = -200;
+    let y = -200;
+    let rx = -200;
+    let ry = -200;
+    let scale = 1;
+    let targetScale = 1;
     let raf = 0;
-    const paint = () => {
-      raf = 0;
-      if (ref.current) ref.current.style.transform = `translate3d(${x - 350}px, ${y - 350}px, 0)`;
+    let visible = false;
+
+    const frame = () => {
+      rx += (x - rx) * 0.18;
+      ry += (y - ry) * 0.18;
+      scale += (targetScale - scale) * 0.18;
+
+      if (dot.current) dot.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+      if (ring.current) ring.current.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%) scale(${scale})`;
+      if (glow.current) glow.current.style.transform = `translate3d(${rx - 350}px, ${ry - 350}px, 0)`;
+
+      const settled = Math.abs(x - rx) < 0.1 && Math.abs(y - ry) < 0.1 && Math.abs(targetScale - scale) < 0.01;
+      raf = settled ? 0 : requestAnimationFrame(frame);
     };
+
+    const wake = () => {
+      if (!raf) raf = requestAnimationFrame(frame);
+    };
+
     const onMove = (e: PointerEvent) => {
       x = e.clientX;
       y = e.clientY;
-      if (!raf) raf = requestAnimationFrame(paint);
+      if (!visible) {
+        visible = true;
+        rx = x;
+        ry = y;
+        for (const el of [glow, dot, ring]) if (el.current) el.current.style.opacity = "1";
+      }
+      const over = (e.target as Element | null)?.closest?.("a, button, [data-cursor]");
+      targetScale = over ? 2.1 : 1;
+      wake();
     };
+
+    const onLeave = () => {
+      visible = false;
+      for (const el of [glow, dot, ring]) if (el.current) el.current.style.opacity = "0";
+    };
+
+    const onDown = () => {
+      targetScale = 0.7;
+      wake();
+    };
+    const onUp = () => {
+      targetScale = 1;
+      wake();
+    };
+
     window.addEventListener("pointermove", onMove, { passive: true });
-    if (ref.current) ref.current.style.opacity = "1";
+    window.addEventListener("pointerdown", onDown, { passive: true });
+    window.addEventListener("pointerup", onUp, { passive: true });
+    document.addEventListener("pointerleave", onLeave);
+
     return () => {
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerdown", onDown);
+      window.removeEventListener("pointerup", onUp);
+      document.removeEventListener("pointerleave", onLeave);
       if (raf) cancelAnimationFrame(raf);
+      root.classList.remove("has-premium-cursor");
     };
   }, []);
+
   return (
-    <div
-      ref={ref}
-      aria-hidden
-      className="pointer-events-none fixed left-0 top-0 z-[1] h-[700px] w-[700px] opacity-0 transition-opacity duration-700 will-change-transform"
-      style={{
-        transform: "translate3d(-1000px,-1000px,0)",
-        background: "radial-gradient(circle at center, rgba(129,140,248,0.13), rgba(139,92,246,0.06) 35%, transparent 65%)",
-      }}
-    />
+    <>
+      <style>{`
+        .has-premium-cursor, .has-premium-cursor * { cursor: none !important; }
+        @media (prefers-reduced-motion: reduce) {
+          .has-premium-cursor, .has-premium-cursor * { cursor: auto !important; }
+        }
+      `}</style>
+      <div
+        ref={glow}
+        aria-hidden
+        className="pointer-events-none fixed left-0 top-0 z-[1] h-[700px] w-[700px] opacity-0 transition-opacity duration-700 will-change-transform"
+        style={{
+          transform: "translate3d(-1000px,-1000px,0)",
+          background: "radial-gradient(circle at center, rgba(129,140,248,0.13), rgba(139,92,246,0.06) 35%, transparent 65%)",
+        }}
+      />
+      <div
+        ref={ring}
+        aria-hidden
+        className="pointer-events-none fixed left-0 top-0 z-[90] h-9 w-9 rounded-full border border-white/40 opacity-0 transition-opacity duration-300 will-change-transform"
+        style={{
+          transform: "translate3d(-200px,-200px,0)",
+          boxShadow: "0 0 24px rgba(167,139,250,0.35), inset 0 0 12px rgba(167,139,250,0.15)",
+        }}
+      />
+      <div
+        ref={dot}
+        aria-hidden
+        className="pointer-events-none fixed left-0 top-0 z-[91] h-1.5 w-1.5 rounded-full bg-white opacity-0 transition-opacity duration-300 will-change-transform"
+        style={{ transform: "translate3d(-200px,-200px,0)", boxShadow: "0 0 12px rgba(255,255,255,0.8)" }}
+      />
+    </>
   );
+}
+
+/** Eased scroll to a section: no hash in the URL, no jump, honours reduced motion. */
+function useSmoothScroll() {
+  return (id: string) => (e: React.MouseEvent) => {
+    e.preventDefault();
+    const target = document.getElementById(id);
+    if (!target) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const to = target.getBoundingClientRect().top + window.scrollY - 96;
+    if (reduce) {
+      window.scrollTo(0, to);
+      return;
+    }
+    const from = window.scrollY;
+    const distance = to - from;
+    const duration = Math.min(1500, Math.max(600, Math.abs(distance) * 0.55));
+    let start = 0;
+    const step = (now: number) => {
+      if (!start) start = now;
+      const p = Math.min(1, (now - start) / duration);
+      // easeInOutCubic
+      const eased = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+      window.scrollTo(0, from + distance * eased);
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
 }
 
 function CopyEmail({ label, done: doneLabel }: { label: string; done: string }) {
@@ -287,7 +434,8 @@ function CopyEmail({ label, done: doneLabel }: { label: string; done: string }) 
 export default function PortfolioClient({ lang = "de" }: { lang?: Lang }) {
   const c = t[lang];
   const { scrollYProgress } = useScroll();
-  const ids = ["projekte", "kenntnisse", "arbeitsweise", "kontakt"];
+  const ids = ["projekte", "leistungen", "kenntnisse", "kontakt"];
+  const scrollTo = useSmoothScroll();
 
   return (
     <div
@@ -329,7 +477,7 @@ export default function PortfolioClient({ lang = "de" }: { lang?: Lang }) {
         />
       </div>
 
-      <CursorGlow />
+      <PremiumCursor />
 
       {/* Nav */}
       <motion.nav
@@ -339,12 +487,12 @@ export default function PortfolioClient({ lang = "de" }: { lang?: Lang }) {
         className="fixed inset-x-0 top-4 z-50 mx-auto w-[calc(100%-2rem)] max-w-5xl"
       >
         <div className="flex items-center justify-between rounded-full border border-white/10 bg-[#0a0b10]/85 px-5 py-3 backdrop-blur-md">
-          <a href="#top" className="text-sm font-semibold tracking-tight">
+          <a href="#top" onClick={scrollTo("top")} className="text-sm font-semibold tracking-tight">
             Abdullah Khalfi
           </a>
           <div className="hidden items-center gap-7 text-sm text-white/60 md:flex">
             {c.nav.map((label, i) => (
-              <a key={label} className="transition hover:text-white" href={`#${ids[i]}`}>
+              <a key={label} className="transition hover:text-white" href={`#${ids[i]}`} onClick={scrollTo(ids[i])}>
                 {label}
               </a>
             ))}
@@ -357,7 +505,7 @@ export default function PortfolioClient({ lang = "de" }: { lang?: Lang }) {
             >
               {c.switchLabel}
             </a>
-            <a href="#kontakt" className="rounded-full bg-white px-4 py-1.5 text-sm font-medium text-black transition hover:bg-white/90">
+            <a href="#kontakt" onClick={scrollTo("kontakt")} className="rounded-full bg-white px-4 py-1.5 text-sm font-medium text-black transition hover:bg-white/90">
               {c.contactBtn}
             </a>
           </div>
@@ -413,6 +561,7 @@ export default function PortfolioClient({ lang = "de" }: { lang?: Lang }) {
           >
             <a
               href="#projekte"
+              onClick={scrollTo("projekte")}
               className="group inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-medium text-black transition hover:shadow-[0_0_40px_rgba(167,139,250,0.45)]"
             >
               {c.ctaProjects}
@@ -543,6 +692,34 @@ export default function PortfolioClient({ lang = "de" }: { lang?: Lang }) {
                           </li>
                         ))}
                       </ul>
+                    </div>
+                  </SpotlightCard>
+                </Reveal>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* Services */}
+        <section id="leistungen" className="mx-auto max-w-6xl scroll-mt-28 px-6 py-24">
+          <Reveal>
+            <p className="text-sm font-medium uppercase tracking-[0.25em] text-violet-300/80">{c.servKicker}</p>
+            <h2 className="mt-4 max-w-3xl text-4xl font-semibold tracking-[-0.03em] sm:text-5xl">{c.servTitle}</h2>
+            <p className="mt-5 max-w-2xl text-white/55">{c.servText}</p>
+          </Reveal>
+          <div className="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {c.services.map((s, i) => {
+              const m = serviceMeta[i];
+              const Icon = m.icon;
+              return (
+                <Reveal key={s.title} delay={(i % 3) * 0.07}>
+                  <SpotlightCard className="h-full">
+                    <div className="flex h-full flex-col p-7">
+                      <span className={`flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-gradient-to-br ${m.hue} transition-transform duration-500 group-hover:-translate-y-1`}>
+                        <Icon className="h-6 w-6 text-white" />
+                      </span>
+                      <h3 className="mt-6 text-lg font-semibold leading-snug tracking-tight">{s.title}</h3>
+                      <p className="mt-3 flex-1 text-sm leading-relaxed text-white/55">{s.text}</p>
                     </div>
                   </SpotlightCard>
                 </Reveal>
