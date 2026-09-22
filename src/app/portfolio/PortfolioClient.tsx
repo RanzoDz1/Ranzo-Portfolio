@@ -24,7 +24,6 @@ import {
   Search,
   Wrench,
   Languages,
-  Download,
 } from "lucide-react";
 
 type Lang = "de" | "en";
@@ -97,11 +96,8 @@ const t = {
     ],
     cKicker: "Kontakt",
     cTitle: "Lassen Sie uns sprechen.",
-    cText: "Ich bin ab sofort verfügbar, gern in Festanstellung, in Freiburg, hybrid oder remote. Meinen Lebenslauf können Sie direkt herunterladen, Arbeitsproben zeige ich Ihnen gern im Gespräch.",
+    cText: "Ich bin ab sofort verfügbar, gern in Festanstellung, in Freiburg, hybrid oder remote. Meinen Lebenslauf und Arbeitsproben sende ich Ihnen gern zu.",
     cMail: "E-Mail schreiben",
-    cCv: "Lebenslauf herunterladen",
-    cvHref: "/Abdullah_Khalfi_Lebenslauf.pdf",
-    cvFile: "Abdullah_Khalfi_Lebenslauf.pdf",
     role: "Webentwickler",
     photoAlt: "Abdullah Khalfi, Webentwickler aus Freiburg",
     mailSubject: "Anfrage%20zu%20Ihrem%20Portfolio",
@@ -156,11 +152,8 @@ const t = {
     ],
     cKicker: "Contact",
     cTitle: "Let's talk.",
-    cText: "I'm available now, ideally for a permanent role, in Freiburg, hybrid or remote. You can download my CV right here, and I'm happy to walk you through work samples in a call.",
+    cText: "I'm available now, ideally for a permanent role, in Freiburg, hybrid or remote. I'm happy to send you my CV and work samples.",
     cMail: "Send an email",
-    cCv: "Download CV",
-    cvHref: "/Abdullah_Khalfi_CV.pdf",
-    cvFile: "Abdullah_Khalfi_CV.pdf",
     role: "Web Developer",
     photoAlt: "Abdullah Khalfi, web developer based in Freiburg, Germany",
     mailSubject: "Enquiry%20about%20your%20portfolio",
@@ -432,14 +425,6 @@ export default function PortfolioClient({ lang = "de" }: { lang?: Lang }) {
               <Mail className="h-4 w-4" />
               {c.ctaMail}
             </a>
-            <a
-              href={c.cvHref}
-              download={c.cvFile}
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-medium text-white transition hover:bg-white/10"
-            >
-              <Download className="h-4 w-4" />
-              {c.cCv}
-            </a>
           </motion.div>
           </div>
 
@@ -663,14 +648,6 @@ export default function PortfolioClient({ lang = "de" }: { lang?: Lang }) {
                     >
                       {c.cMail}
                       <ArrowUpRight className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-                    </a>
-                    <a
-                      href={c.cvHref}
-                      download={c.cvFile}
-                      className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-medium text-white transition hover:bg-white/10"
-                    >
-                      <Download className="h-4 w-4" />
-                      {c.cCv}
                     </a>
                   </div>
                 </div>
