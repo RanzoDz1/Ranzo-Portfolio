@@ -77,11 +77,11 @@ const t = {
     headline: ["Webanwendungen,", "die", "begeistern", "und", "zuverlässig", "laufen."],
     accent: "begeistern",
     intro:
-      "Ich bin Abdullah Khalfi, Webentwickler aus Freiburg. Seit 2021 entwickle ich Plattformen, Websites und Shops mit React, Next.js und TypeScript, von der ersten Idee bis zum laufenden Betrieb.",
+      "Ich bin Abdullah Khalfi, Webentwickler aus Freiburg. Seit 2023 entwickle ich Plattformen, Websites und Shops mit React, Next.js und TypeScript, von der ersten Idee bis zum laufenden Betrieb.",
     ctaProjects: "Projekte ansehen",
     ctaMail: "Nachricht schreiben",
     stats: [
-      { value: 2021, prefix: "seit ", suffix: "", label: "Webentwicklung für Kunden" },
+      { value: 2023, prefix: "seit ", suffix: "", label: "Webentwicklung für Kunden" },
       { value: 10, prefix: "", suffix: "+", label: "veröffentlichte Webprojekte" },
       { value: 5, prefix: "", suffix: "+ Jahre", label: "Praxis in Web und IT" },
       { value: 0, prefix: "", suffix: "", label: "Kunden in Deutschland und den USA", text: "DE · USA" },
@@ -144,11 +144,11 @@ const t = {
     headline: ["Web", "applications", "that", "impress", "and", "run", "reliably."],
     accent: "impress",
     intro:
-      "I'm Abdullah Khalfi, a web developer based in Freiburg, Germany. Since 2021 I have been building platforms, websites and online shops with React, Next.js and TypeScript, from the first idea to production.",
+      "I'm Abdullah Khalfi, a web developer based in Freiburg, Germany. Since 2023 I have been building platforms, websites and online shops with React, Next.js and TypeScript, from the first idea to production.",
     ctaProjects: "View projects",
     ctaMail: "Send a message",
     stats: [
-      { value: 2021, prefix: "since ", suffix: "", label: "building for clients" },
+      { value: 2023, prefix: "since ", suffix: "", label: "building for clients" },
       { value: 10, prefix: "", suffix: "+", label: "web projects shipped" },
       { value: 5, prefix: "", suffix: "+ years", label: "hands-on in web and IT" },
       { value: 0, prefix: "", suffix: "", label: "clients in Germany and the US", text: "DE · US" },
@@ -263,45 +263,29 @@ function SpotlightCard({ children, className = "" }: { children: React.ReactNode
 }
 
 /**
- * Cursor: ambient light + a precise dot + a trailing ring, all in ONE pointermove
- * listener and ONE rAF loop. Nothing but `transform` is written per frame, so the
- * compositor does the work and scrolling stays at full speed. The loop parks itself
- * as soon as the ring has caught up with the pointer.
+ * Ambient light that follows the mouse. The system cursor stays exactly as it is.
+ * One pointermove listener, one rAF loop, `transform` only — and the loop parks
+ * itself as soon as the light has caught up, so an idle page costs nothing.
  */
-function PremiumCursor() {
+function CursorGlow() {
   const glow = useRef<HTMLDivElement>(null);
-  const dot = useRef<HTMLDivElement>(null);
-  const ring = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!window.matchMedia("(pointer: fine)").matches) return;
-    const root = document.documentElement;
-    root.classList.add("has-premium-cursor");
 
-    let x = -200;
-    let y = -200;
-    let rx = -200;
-    let ry = -200;
-    let scale = 1;
-    let targetScale = 1;
+    let x = -1000;
+    let y = -1000;
+    let gx = -1000;
+    let gy = -1000;
     let raf = 0;
     let visible = false;
 
     const frame = () => {
-      rx += (x - rx) * 0.18;
-      ry += (y - ry) * 0.18;
-      scale += (targetScale - scale) * 0.18;
-
-      if (dot.current) dot.current.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
-      if (ring.current) ring.current.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%) scale(${scale})`;
-      if (glow.current) glow.current.style.transform = `translate3d(${rx - 350}px, ${ry - 350}px, 0)`;
-
-      const settled = Math.abs(x - rx) < 0.1 && Math.abs(y - ry) < 0.1 && Math.abs(targetScale - scale) < 0.01;
+      gx += (x - gx) * 0.18;
+      gy += (y - gy) * 0.18;
+      if (glow.current) glow.current.style.transform = `translate3d(${gx - 350}px, ${gy - 350}px, 0)`;
+      const settled = Math.abs(x - gx) < 0.5 && Math.abs(y - gy) < 0.5;
       raf = settled ? 0 : requestAnimationFrame(frame);
-    };
-
-    const wake = () => {
-      if (!raf) raf = requestAnimationFrame(frame);
     };
 
     const onMove = (e: PointerEvent) => {
@@ -309,77 +293,38 @@ function PremiumCursor() {
       y = e.clientY;
       if (!visible) {
         visible = true;
-        rx = x;
-        ry = y;
-        for (const el of [glow, dot, ring]) if (el.current) el.current.style.opacity = "1";
+        gx = x;
+        gy = y;
+        if (glow.current) glow.current.style.opacity = "1";
       }
-      const over = (e.target as Element | null)?.closest?.("a, button, [data-cursor]");
-      targetScale = over ? 2.1 : 1;
-      wake();
+      if (!raf) raf = requestAnimationFrame(frame);
     };
 
     const onLeave = () => {
       visible = false;
-      for (const el of [glow, dot, ring]) if (el.current) el.current.style.opacity = "0";
-    };
-
-    const onDown = () => {
-      targetScale = 0.7;
-      wake();
-    };
-    const onUp = () => {
-      targetScale = 1;
-      wake();
+      if (glow.current) glow.current.style.opacity = "0";
     };
 
     window.addEventListener("pointermove", onMove, { passive: true });
-    window.addEventListener("pointerdown", onDown, { passive: true });
-    window.addEventListener("pointerup", onUp, { passive: true });
     document.addEventListener("pointerleave", onLeave);
 
     return () => {
       window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerdown", onDown);
-      window.removeEventListener("pointerup", onUp);
       document.removeEventListener("pointerleave", onLeave);
       if (raf) cancelAnimationFrame(raf);
-      root.classList.remove("has-premium-cursor");
     };
   }, []);
 
   return (
-    <>
-      <style>{`
-        .has-premium-cursor, .has-premium-cursor * { cursor: none !important; }
-        @media (prefers-reduced-motion: reduce) {
-          .has-premium-cursor, .has-premium-cursor * { cursor: auto !important; }
-        }
-      `}</style>
-      <div
-        ref={glow}
-        aria-hidden
-        className="pointer-events-none fixed left-0 top-0 z-[1] h-[700px] w-[700px] opacity-0 transition-opacity duration-700 will-change-transform"
-        style={{
-          transform: "translate3d(-1000px,-1000px,0)",
-          background: "radial-gradient(circle at center, rgba(129,140,248,0.13), rgba(139,92,246,0.06) 35%, transparent 65%)",
-        }}
-      />
-      <div
-        ref={ring}
-        aria-hidden
-        className="pointer-events-none fixed left-0 top-0 z-[90] h-9 w-9 rounded-full border border-white/40 opacity-0 transition-opacity duration-300 will-change-transform"
-        style={{
-          transform: "translate3d(-200px,-200px,0)",
-          boxShadow: "0 0 24px rgba(167,139,250,0.35), inset 0 0 12px rgba(167,139,250,0.15)",
-        }}
-      />
-      <div
-        ref={dot}
-        aria-hidden
-        className="pointer-events-none fixed left-0 top-0 z-[91] h-1.5 w-1.5 rounded-full bg-white opacity-0 transition-opacity duration-300 will-change-transform"
-        style={{ transform: "translate3d(-200px,-200px,0)", boxShadow: "0 0 12px rgba(255,255,255,0.8)" }}
-      />
-    </>
+    <div
+      ref={glow}
+      aria-hidden
+      className="pointer-events-none fixed left-0 top-0 z-[1] h-[700px] w-[700px] opacity-0 transition-opacity duration-700 will-change-transform"
+      style={{
+        transform: "translate3d(-1000px,-1000px,0)",
+        background: "radial-gradient(circle at center, rgba(129,140,248,0.13), rgba(139,92,246,0.06) 35%, transparent 65%)",
+      }}
+    />
   );
 }
 
@@ -477,7 +422,7 @@ export default function PortfolioClient({ lang = "de" }: { lang?: Lang }) {
         />
       </div>
 
-      <PremiumCursor />
+      <CursorGlow />
 
       {/* Nav */}
       <motion.nav
