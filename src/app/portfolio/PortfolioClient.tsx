@@ -84,7 +84,7 @@ const t = {
       { value: 2023, prefix: "seit ", suffix: "", label: "Webentwicklung für Kunden" },
       { value: 10, prefix: "", suffix: "+", label: "veröffentlichte Webprojekte" },
       { value: 5, prefix: "", suffix: "+ Jahre", label: "Praxis in Web und IT" },
-      { value: 0, prefix: "", suffix: "", label: "Kunden in Deutschland und den USA", text: "DE · USA" },
+      { value: 100, prefix: "", suffix: " %", label: "Erfahrung in Remote-Zusammenarbeit" },
     ],
     projKicker: "Ausgewählte Arbeiten",
     projTitle: "Von der Plattform bis zum Onlineshop.",
@@ -151,7 +151,7 @@ const t = {
       { value: 2023, prefix: "since ", suffix: "", label: "building for clients" },
       { value: 10, prefix: "", suffix: "+", label: "web projects shipped" },
       { value: 5, prefix: "", suffix: "+ years", label: "hands-on in web and IT" },
-      { value: 0, prefix: "", suffix: "", label: "clients in Germany and the US", text: "DE · US" },
+      { value: 100, prefix: "", suffix: " %", label: "experienced in remote collaboration" },
     ],
     projKicker: "Selected work",
     projTitle: "From platforms to online shops.",
@@ -578,7 +578,7 @@ export default function PortfolioClient({ lang = "de" }: { lang?: Lang }) {
             {c.stats.map((s, i) => (
               <Reveal key={s.label} delay={i * 0.07} className="bg-[#07080d] p-7">
                 <div className="bg-gradient-to-b from-white to-white/60 bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl">
-                  {"text" in s ? s.text : <Counter value={s.value} prefix={s.prefix} suffix={s.suffix} />}
+                  <Counter value={s.value} prefix={s.prefix} suffix={s.suffix} />
                 </div>
                 <div className="mt-2 text-sm text-white/50">{s.label}</div>
               </Reveal>
