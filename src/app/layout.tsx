@@ -191,7 +191,7 @@ export default function RootLayout({
     "name": "Ranzo",
     "url": "https://ranzo.dev",
     "jobTitle": "Web Designer & Developer",
-    "description": "Expert freelance web designer with 8+ years of experience. Specializing in high-converting landing pages, Webflow development, and B2B website design.",
+    "description": "Expert freelance web designer with 5+ years of experience. Specializing in high-converting landing pages, Webflow development, and B2B website design.",
     "knowsAbout": [
       "Web Design", "Webflow Development", "Landing Page Design",
       "UI/UX Design", "Conversion Rate Optimization", "SEO",
