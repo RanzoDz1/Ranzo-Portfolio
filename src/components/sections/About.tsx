@@ -14,7 +14,7 @@ const WORKSPACE_IMG = "https://images.unsplash.com/photo-1593642634524-b40b5baae
 const stats = [
     { value: "300+", label: "Projects Delivered" },
     { value: "#1", label: "Google Rankings Achieved" },
-    { value: "8+", label: "Years Experience" },
+    { value: "5+", label: "Years Experience" },
     { value: "100%", label: "Client Satisfaction" },
 ];
 

@@ -27,52 +27,50 @@ const toolkitGroups: { title: string; dot: string; items: string[] }[] = [
     {
         title: "Languages",
         dot: "from-violet-500 to-purple-400",
-        items: [
-            "TypeScript", "JavaScript", "Python", "PHP", "C#", "Java", "Go",
-            "Rust", "C++", "Ruby", "Swift", "Kotlin", "SQL", "Bash", "HTML5", "CSS3",
-        ],
+        items: ["TypeScript", "JavaScript", "Python", "PHP", "C#", "SQL"],
     },
     {
-        title: "Frameworks & Runtimes",
+        title: "Markup & Styling",
+        dot: "from-rose-500 to-pink-400",
+        items: ["HTML5", "CSS3", "Tailwind CSS", "shadcn/ui", "Radix UI"],
+    },
+    {
+        title: "Frontend",
         dot: "from-blue-500 to-cyan-400",
         items: [
-            "Next.js", "React", "Vue", "Svelte", "Node.js", "Laravel", ".NET",
-            "Django", "FastAPI", "Express", "Spring Boot", "Tailwind CSS",
-            "Framer Motion", "React Native", "Flutter", "WordPress",
+            "React", "Next.js", "Framer Motion", "GSAP", "Three.js",
+            "Spline", "Lenis", "Recharts", "Vite",
         ],
     },
     {
-        title: "Data & Backend",
+        title: "Backend & APIs",
         dot: "from-emerald-500 to-teal-400",
         items: [
-            "PostgreSQL", "MySQL", "MongoDB", "Redis", "Supabase", "Firebase",
-            "Prisma", "GraphQL", "REST APIs", "Airtable",
+            "Node.js", "Prisma", "NextAuth", "JWT", "Zod", "Socket.IO",
+            "Stripe", "PayPal", "Resend", "Web Push",
         ],
     },
     {
-        title: "Cloud & DevOps",
+        title: "Data & Storage",
         dot: "from-sky-500 to-indigo-400",
         items: [
-            "Vercel", "AWS", "Docker", "GitHub Actions", "Netlify", "Cloudflare",
-            "Nginx", "Linux", "Git", "CI/CD",
+            "PostgreSQL", "Redis", "Supabase", "Vercel KV", "Vercel Blob", "Cloudinary",
         ],
     },
     {
         title: "AI & Automation",
         dot: "from-amber-500 to-orange-400",
-        items: [
-            "Claude Code", "Anthropic API", "OpenAI API", "LangChain",
-            "MCP Servers", "n8n", "Make", "Zapier", "Prompt Engineering",
-            "RAG Pipelines",
-        ],
+        items: ["Claude Code", "Anthropic API", "MCP Servers", "Selenium", "n8n"],
+    },
+    {
+        title: "DevOps & Testing",
+        dot: "from-lime-500 to-green-400",
+        items: ["Vercel", "Git", "GitHub Actions", "Playwright", "Vitest"],
     },
     {
         title: "Design & Growth",
-        dot: "from-rose-500 to-pink-400",
-        items: [
-            "Figma", "Webflow", "Framer", "Adobe XD", "Photoshop",
-            "SEO Strategy", "GA4", "SEMrush", "Notion", "Shopify",
-        ],
+        dot: "from-fuchsia-500 to-rose-400",
+        items: ["Figma", "Webflow", "Framer", "Photoshop", "SEO", "GA4", "SEMrush"],
     },
 ];
 
