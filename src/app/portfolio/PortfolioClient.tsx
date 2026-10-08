@@ -48,15 +48,15 @@ const projectMeta = [
 
 const skillMeta = [
   { icon: Code2, items: ["React", "Next.js", "TypeScript", "JavaScript", "HTML5", "CSS3", "Tailwind CSS", "Framer Motion"] },
-  { icon: Database, items: ["Node.js", "Python", "PHP", "C#", "REST APIs", "SQL", "PostgreSQL", "MySQL", "MongoDB", "Redis", "Prisma"] },
+  { icon: Database, items: ["Node.js", "Python", "PHP", "C#", "REST APIs", "SQL", "PostgreSQL", "MySQL", "MongoDB", "Prisma"] },
   { icon: Cloud, items: ["Vercel", "AWS", "Docker", "Git", "GitHub", "Hosting", "DNS", "SSL"] },
-  { icon: Bot, items: ["Claude Code", "Claude API", "n8n", "Make", "Zapier", "Webhooks", "Webflow", "Figma", "Jira", "Shopify", "Microsoft 365"] },
+  { icon: Bot, items: ["Claude Code", "Claude API", "n8n", "Webhooks", "Webflow", "Figma", "Shopify", "Microsoft 365"] },
 ];
 
 const marquee = [
   "React", "Next.js", "TypeScript", "JavaScript", "Node.js", "Python", "PHP", "C#", "SQL",
-  "PostgreSQL", "MySQL", "MongoDB", "Redis", "Tailwind CSS", "REST APIs", "Docker", "AWS",
-  "Git", "Vercel", "n8n", "Make", "Zapier", "Webflow", "Figma", "Shopify", "Microsoft 365", "Claude Code",
+  "PostgreSQL", "MySQL", "MongoDB", "Tailwind CSS", "REST APIs", "Docker", "AWS",
+  "Git", "Vercel", "n8n", "Webflow", "Shopify", "Microsoft 365", "Claude Code",
 ];
 
 const stepIcons = [Search, PenTool, Rocket, Wrench];
