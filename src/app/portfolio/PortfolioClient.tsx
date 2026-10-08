@@ -48,14 +48,15 @@ const projectMeta = [
 
 const skillMeta = [
   { icon: Code2, items: ["React", "Next.js", "TypeScript", "JavaScript", "HTML5", "CSS3", "Tailwind CSS", "Framer Motion"] },
-  { icon: Database, items: ["Node.js", "Express", "Python", "C#", "REST APIs", "SQL", "PostgreSQL", "MongoDB", "Prisma"] },
-  { icon: Cloud, items: ["Vercel", "Git", "GitHub", "Hosting", "DNS", "SSL"] },
-  { icon: Bot, items: ["Claude Code", "Claude API", "OpenAI API", "Webhooks", "Figma", "Shopify", "Microsoft 365"] },
+  { icon: Database, items: ["Node.js", "Python", "PHP", "C#", "REST APIs", "SQL", "PostgreSQL", "MySQL", "MongoDB", "Redis", "Prisma"] },
+  { icon: Cloud, items: ["Vercel", "AWS", "Docker", "Git", "GitHub", "Hosting", "DNS", "SSL"] },
+  { icon: Bot, items: ["Claude Code", "Claude API", "n8n", "Make", "Zapier", "Webhooks", "Webflow", "Figma", "Jira", "Shopify", "Microsoft 365"] },
 ];
 
 const marquee = [
-  "React", "Next.js", "TypeScript", "JavaScript", "Node.js", "Python", "C#", "SQL", "PostgreSQL",
-  "MongoDB", "Tailwind CSS", "REST APIs", "Git", "Vercel", "Shopify", "Microsoft 365", "Claude Code",
+  "React", "Next.js", "TypeScript", "JavaScript", "Node.js", "Python", "PHP", "C#", "SQL",
+  "PostgreSQL", "MySQL", "MongoDB", "Redis", "Tailwind CSS", "REST APIs", "Docker", "AWS",
+  "Git", "Vercel", "n8n", "Make", "Zapier", "Webflow", "Figma", "Shopify", "Microsoft 365", "Claude Code",
 ];
 
 const stepIcons = [Search, PenTool, Rocket, Wrench];
@@ -109,7 +110,7 @@ const t = {
     ],
     skillKicker: "Kenntnisse",
     skillTitle: "Moderner Stack, sauber umgesetzt.",
-    skillGroups: ["Frontend", "Backend und Daten", "Betrieb und Deployment", "KI und Werkzeuge"],
+    skillGroups: ["Frontend", "Backend und Daten", "Betrieb und Deployment", "KI, Automatisierung und Werkzeuge"],
     stepKicker: "Arbeitsweise",
     stepTitle: "Vom Gedanken bis zum Betrieb.",
     steps: [
@@ -176,7 +177,7 @@ const t = {
     ],
     skillKicker: "Skills",
     skillTitle: "A modern stack, cleanly executed.",
-    skillGroups: ["Frontend", "Backend and data", "Operations and deployment", "AI and tools"],
+    skillGroups: ["Frontend", "Backend and data", "Operations and deployment", "AI, automation and tools"],
     stepKicker: "Process",
     stepTitle: "From idea to production.",
     steps: [
