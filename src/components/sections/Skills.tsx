@@ -46,26 +46,33 @@ const toolkitGroups: { title: string; dot: string; items: string[] }[] = [
         title: "Backend & APIs",
         dot: "from-emerald-500 to-teal-400",
         items: [
-            "Node.js", "Prisma", "NextAuth", "JWT", "Zod", "Socket.IO",
-            "Stripe", "PayPal", "Resend", "Web Push",
+            "Node.js", "REST APIs", "Prisma", "NextAuth", "JWT", "Zod",
+            "Socket.IO", "Webhooks", "Stripe", "PayPal", "Resend", "Web Push",
         ],
     },
     {
-        title: "Data & Storage",
+        title: "Databases & Storage",
         dot: "from-sky-500 to-indigo-400",
         items: [
-            "PostgreSQL", "Redis", "Supabase", "Vercel KV", "Vercel Blob", "Cloudinary",
+            "PostgreSQL", "MySQL", "MongoDB", "Redis", "Supabase",
+            "Vercel KV", "Vercel Blob", "Cloudinary",
         ],
     },
     {
         title: "AI & Automation",
         dot: "from-amber-500 to-orange-400",
-        items: ["Claude Code", "Anthropic API", "MCP Servers", "Selenium", "n8n"],
+        items: [
+            "Claude Code", "Anthropic API", "MCP Servers",
+            "n8n", "Make", "Zapier", "Selenium",
+        ],
     },
     {
-        title: "DevOps & Testing",
+        title: "Cloud & DevOps",
         dot: "from-lime-500 to-green-400",
-        items: ["Vercel", "Git", "GitHub Actions", "Playwright", "Vitest"],
+        items: [
+            "Vercel", "AWS", "Docker", "Git", "GitHub Actions",
+            "Jira", "Playwright", "Vitest",
+        ],
     },
     {
         title: "Design & Growth",
